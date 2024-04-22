@@ -1,0 +1,61 @@
+<!doctype html>
+<!--
+* Tabler - Premium and Open Source dashboard template with responsive and high quality UI.
+* @version 1.0.0-beta19
+* @link https://tabler.io
+* Copyright 2018-2023 The Tabler Authors
+* Copyright 2018-2023 codecalm.net Paweł Kuna
+* Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
+-->
+<html lang="id">
+
+  <head>
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+
+    <title>{% block title %}{% endblock title %}</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='dashboard/img/logo/logo-main.svg') }}" type="image/svg+xml" />
+
+    <!-- CSS files -->
+    <link href="{{ url_for('static', filename='dashboard/css/tabler.min.css') }}" rel="stylesheet"/>
+
+    <style>
+      @import url('https://rsms.me/inter/inter.css');
+      :root {
+      	--tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+      }
+      body {
+      	font-feature-settings: "cv03", "cv04", "cv11";
+      }
+    </style>
+
+    {% block style %} {% endblock style %}
+
+  </head>
+  
+  <body >
+    <script src="{{ url_for('static', filename='dashboard/js/demo-theme.min.js') }}"></script>
+    <div class="page">
+      <!-- Navbar -->
+
+      {% include 'dashboard/partials/navbar.html' %}
+      
+      <div class="page-wrapper">
+        {% block content %}{% endblock content %}
+
+        {% include 'dashboard/partials/footer.html' %}
+      </div>
+
+    </div>
+
+    <!-- Tabler Core -->
+    <script src="{{ url_for('static', filename='dashboard/js/tabler.min.js') }}" defer></script>
+
+    {% block script %}{% endblock script %}
+
+  </body>
+</html>

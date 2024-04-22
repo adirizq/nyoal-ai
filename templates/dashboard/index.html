@@ -1,0 +1,112 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}NyoalAI - Dashboard - Uji Coba{% endblock title %}
+
+{% block content %}
+<!-- Page header -->
+<div class="page-header d-print-none">
+  <div class="container-xl">
+    <div class="row g-2 align-items-center">
+      <div class="col">
+        <!-- Page pre-title -->
+        <div class="page-pretitle">
+          Uji Coba
+        </div>
+        <h2 class="page-title">
+          Uji Coba Pembuatan Soal
+        </h2>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Page body -->
+<div class="page-body">
+  <div class="container-xl">
+    <div class="row row-deck row-cards">
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Data Pembuatan Soal</h3>
+          </div>
+          <div class="card-body">
+            <label class="form-label">Materi <span class="form-label-description">548/1024</span></label>
+            <textarea class="form-control mb-3" name="example-textarea-input" rows="12" placeholder="Content..">Tetikus atau mouse adalah peranti penunjuk yang digunakan untuk memasukkan data dan perintah ke dalam komputer selain dengan papan ketik. Mouse memperoleh nama demikian karena kabel yang menjulur berbentuk seperti ekor tikus. <br/><br/>Mouse pertama kali dibuat pada tahun 1963 oleh Douglas Engelbart yang berbahan dasar kayu dengan satu tombol. Model kedua sudah dilengkapi dengan tiga tombol. Pada tahun 1970, Douglas Engelbart memperkenalkan Mouse yang dapat mengetahui posisi X-Y pada layar komputer, Mouse ini dikenal dengan nama Indikator Posisi X-Y.</textarea>
+            <div class="row justify-content-end">
+              <div class="col-auto">
+                <a href="#" class="btn btn-warning w-100">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-reload">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M19.933 13.041a8 8 0 1 1 -9.925 -8.788c3.899 -1 7.935 1.007 9.425 4.747" />
+                    <path d="M20 4v5h-5" />
+                  </svg> Reset
+                </a>
+              </div>
+              <div class="col-auto">
+                <a href="#" class="btn btn-success w-100">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+                    <path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+                  </svg> Paste
+                </a>
+              </div>
+              <div class="col-auto">
+                <a href="#" class="btn btn-primary w-100">
+                  Buat Soal <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right me-0 ms-2">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M5 12l14 0" />
+                    <path d="M13 18l6 -6" />
+                    <path d="M13 6l6 6" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="text-danger text-end">* Hanya mendukung teks Bahasa Indonesia non-matematis.</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Prediksi Soal & Jawaban</h3>
+          </div>
+          <div class="card-body">
+            <div class="card mb-3">
+              <div class="card-body">
+                <label class="form-label">Pertanyaan</label>
+                <p>Apa peranti penunjuk yang digunakan untuk memasukkan data dan perintah ke dalam komputer selain dengan papan ketik?</p>
+                <label class="form-label">Jawaban</label>
+                <p>Tetikus atau mouse</p>
+              </div>
+            </div>
+            <div class="card mb-3">
+              <div class="card-body">
+                <label class="form-label">Pertanyaan</label>
+                <p>Apa peranti penunjuk yang digunakan untuk memasukkan data dan perintah ke dalam komputer selain dengan papan ketik?</p>
+                <label class="form-label">Jawaban</label>
+                <p>Tetikus atau mouse</p>
+              </div>
+            </div>
+            <div class="card mb-3">
+              <div class="card-body">
+                <label class="form-label">Pertanyaan</label>
+                <p>Apa peranti penunjuk yang digunakan untuk memasukkan data dan perintah ke dalam komputer selain dengan papan ketik?</p>
+                <label class="form-label">Jawaban</label>
+                <p>Tetikus atau mouse</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card-footer">
+            <div class="text-danger text-end">* Selalu cek kembali hasil prediksi soal & jawaban sebelum digunakan.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
