@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html lang="id">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Title -->
+    <title>{% block title %}{% endblock title %}</title>
+
+    <!-- SEO meta tags -->
+    <meta name="description" content="Author: Rizky Adi, Nyoal Ai:  Pelopor AI Pembuat Soal di Indonesia" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='front/images/logo/logo-main.svg') }}" type="image/svg+xml" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='front/css/plugins.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='front/css/style.css') }}" />
+
+    {% block style %}{% endblock style %}
+</head>
+
+<body>
+    
+    {% block content %} {% endblock content %}
+
+    <!-- JS -->
+    <script src="{{ url_for('static', filename='front/js/plugins.js') }}"></script>
+    <script src="{{ url_for('static', filename='front/js/main.js') }}"></script>
+
+    {% block script %}{% endblock script %}
+
+</body>
+
+</html>

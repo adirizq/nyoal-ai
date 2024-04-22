@@ -1,0 +1,550 @@
+{% extends 'front/base.html' %}
+
+{% block title %}NyoalAI - Pelopor AI Pembuat Soal{% endblock title %}
+
+{% block content %}
+    <div class="wrapper d-flex flex-column justify-between">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg fixed-top bg-white sticky">
+            <div class="container">
+                <!-- Logo -->
+                <a class="navbar-brand" href="{{ url_for('index') }}">
+                    <img src="{{ url_for('static', filename='front/images/logo/logo-horizontal.svg') }}" alt="" width="165" />
+                </a>
+
+                <!-- Navbar toggler button -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <div class="navbar-toggler-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+
+                <!-- Navbar content -->
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <div class="navbar-content-inner ms-lg-auto d-flex flex-column flex-lg-row align-lg-center gap-4 gap-lg-10 p-2 p-lg-0">
+                        <ul class="navbar-nav gap-lg-2 gap-xl-5">
+                            <li class="nav-item">
+                                <a class="nav-link " href="#about">Tentang</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="#feature">Fitur</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#use-case">Penggunaan</a>
+                            </li>
+                        </ul>
+                        <div class="">
+                            <a href="{{ url_for('auth.sign_in') }}" class="btn btn-outline-primary">Masuk</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="flex-grow-1">
+            <!-- Hero -->
+            <section class="hero-section style-2 position-relative py-10 py-lg-15">
+                <div class="striped-shape">
+                    <img src="{{ url_for('static', filename='front/images/shapes/stripe-lite.svg') }}" alt="" />
+                </div>
+                <div class="container">
+                    <div class="row align-center">
+                        <div class="col-lg-5">
+                            <div class="text-center text-lg-start position-relative z-1">
+                                <p class="text-primary" data-aos="fade-up-sm" data-aos-delay="50">
+                                    <span class="border px-4 py-2 rounded-3 d-inline-block">Pelopor AI Pembuat Soal</span>
+                                </p>
+                                <h1 class=" mb-8" data-aos="fade-up-sm" data-aos-delay="100">
+                                    Buat soal lebih cepat; Kini <span class="text-gradient-1">NyoalAI</span> telah hadir untuk membantu Anda.
+                                </h1>
+                                <a href="{{ url_for('auth.sign_up') }}" class="btn btn-primary px-4" type="button">
+                                    Daftar Gratis
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-7" data-aos="fade-up-sm" data-aos-delay="200">
+                            <div class="image-with-shape">
+                                <img src="{{ url_for('static', filename='front/images/shapes/blurry-shape-2.svg') }}" alt="" class="shape animate-scale" />
+                                <div class="mt-12 rounded-4 border shadow-lg overflow-hidden">
+                                    <img class="img-fluid d-inline-block" src="{{ url_for('static', filename='front/images/screens/screen-6.jpg') }}" alt="" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-center mt-24">
+                        <div class="col-lg-10">
+                            <div class="text-center">
+                                <h4 class="mb-10" data-aos="fade-up-sm" data-aos-delay="50">
+                                    Karya
+                                    <span class="text-gradient-1">Politeknik Terbaik</span>
+                                    Indonesia
+                                </h4>
+
+                                <div class="row align-center justify-center row-cols-3 row-cols-md-5 g-6 g-lg-10 g-xl-20">
+                                    <div class="col" data-aos="fade-up-sm" data-aos-delay="100" data-aos-offset="10">
+                                        <img src="{{ url_for('static', filename='front/images/pnj/1.png') }}" alt="" class="img-fluid brand-img" />
+                                    </div>
+                                    <div class="col" data-aos="fade-up-sm" data-aos-delay="150" data-aos-offset="10">
+                                        <img src="{{ url_for('static', filename='front/images/pnj/2.png') }}" alt="" class="img-fluid brand-img" />
+                                    </div>
+                                    <div class="col" data-aos="fade-up-sm" data-aos-delay="150" data-aos-offset="10">
+                                        <img src="{{ url_for('static', filename='front/images/pnj/3.png') }}" alt="" class="img-fluid brand-img" />
+                                    </div>
+                                    <div class="col" data-aos="fade-up-sm" data-aos-delay="150" data-aos-offset="10">
+                                        <img src="{{ url_for('static', filename='front/images/pnj/4.png') }}" alt="" class="img-fluid brand-img" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- About -->
+            <section id="about" class="features-section has-blurry-shape position-relative overflow-hidden py-10 py-lg-15 ">
+                <div class="blurry-shape">
+                    <img src="{{ url_for('static', filename='front/images/shapes/blurry-shape-3.svg') }}" alt="" class="img-fluid" />
+                </div>
+                <div class="container">
+                    <div class="text-center mb-18">
+                        <h1 class=" mb-0" data-aos="fade-up-sm" data-aos-delay="50">
+                            Buat Soal Secara Instan, <br class="d-none d-lg-block" /> dengan <span class="text-gradient-1">NyoalAI</span>
+                        </h1>
+                    </div>
+
+                    <div class="row row-cols-1 row-cols-lg-3 g-6 g-xl-14">
+                        <div class="col" data-aos="fade-up-sm" data-aos-delay="100">
+                            <div class="d-flex flex-column flex-lg-row gap-6">
+                                <div class="icon w-14 h-14 flex-shrink-0 d-flex align-center justify-center rounded-3 p-2 border bg-primary bg-opacity-10 text-primary border-primary border-opacity-25">
+                                    <h4 class="mb-0">01</h4>
+                                </div>
+                                <div class="content">
+                                    <h4 class=" mb-4">Input Materi</h4>
+                                    <p>
+                                        Pertama Anda akan memberikan materi atau informasi sebagai dasar untuk pembuatan soal.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col" data-aos="fade-up-sm" data-aos-delay="150">
+                            <div class="d-flex flex-column flex-lg-row gap-6">
+                                <div class="icon w-14 h-14 flex-shrink-0 d-flex align-center justify-center rounded-3 p-2 border bg-primary bg-opacity-10 text-primary border-primary border-opacity-25">
+                                    <h4 class="mb-0">02</h4>
+                                </div>
+                                <div class="content">
+                                    <h4 class=" mb-4">NyoalAI Membuat Soal</h4>
+                                    <p>
+                                        Selanjutnya NyoalAI akan memberikan Anda beberapa saran soal dan jawabannya berdasarkan materi.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col" data-aos="fade-up-sm" data-aos-delay="200">
+                            <div class="d-flex flex-column flex-lg-row gap-6">
+                                <div class="icon w-14 h-14 flex-shrink-0 d-flex align-center justify-center rounded-3 p-2 border bg-primary bg-opacity-10 text-primary border-primary border-opacity-25">
+                                    <h4 class="mb-0">03</h4>
+                                </div>
+                                <div class="content">
+                                    <h4 class=" mb-4">Simpan dan Export</h4>
+                                    <p>
+                                        Terakhir Anda dapat menyimpan soal yang telah dibuat dan mengekspornya ke dalam format yang Anda inginkan.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-12">
+                        <a href="{{ url_for('auth.sign_up') }}" class="btn btn-primary">Coba Gratis</a>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- Features -->
+            <section id="feature" class="py-10 py-lg-15 ">
+                <div class="container">
+                    <div class="bg-lite-blue rounded-4 p-6 p-md-12 px-xl-20 py-xl-12 hover-border mb-18">
+                        <div class="row g-6 g-lg-14 g-xl-20 align-center">
+                            <div class="col-lg-6" data-aos="fade-up-sm" data-aos-delay="50">
+                                <div class="content">
+                                    <p class="text-primary">Fitur 1</p>
+                                    <h1 class=" mb-8">
+                                        Buat Soal Tes/Ujian Secara Instan.
+                                    </h1>
+                                    <p class="mb-6">
+                                        Membuat soal secara manual terasa melelahkan? NyoalAI akan membantu Anda membuat soal secara instan. Anda hanya perlu memeriksa dan menyesuaikan soal yang telah dibuat.
+                                    </p>
+                                    <ul class="list-unstyled list-check mb-8">
+                                        <li>
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18" class="icon">
+                                                <g>
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m3.75 9 3.75 3.75 7.5-7.5" />
+                                                </g>
+                                            </svg>
+                                            <span>Cocok untuk semua subjek, kecuali perhitungan matematis</span>
+                                        </li>
+                                        <li>
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18" class="icon">
+                                                <g>
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m3.75 9 3.75 3.75 7.5-7.5" />
+                                                </g>
+                                            </svg>
+                                            <span>Soal dilengkapi dengan kunci jawaban</span>
+                                        </li>
+                                        <li>
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18" class="icon">
+                                                <g>
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m3.75 9 3.75 3.75 7.5-7.5" />
+                                                </g>
+                                            </svg>
+                                            <span>Hanya perlu input materi</span>
+                                        </li>
+                                    </ul>
+                                    <a href="{{ url_for('auth.sign_up') }}" class="arrow-link arrow-link-primary text-primary gap-3">
+                                        <span>Coba Gratis Sekarang</span>
+                                        <svg class="icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4 12.6667L12.6667 4M12.6667 4V12.32M12.6667 4H4.34667" stroke="currentColor" stroke-width="1.21" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6" data-aos="fade-up-sm" data-aos-delay="100">
+                                <div class="feature-img">
+                                    <img src="{{ url_for('static', filename='front/images/feature/1.jpg') }}" alt="" class="img-fluid" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-lite-blue rounded-4 p-6 p-md-12 px-xl-20 py-xl-12 hover-border mb-18">
+                        <div class="row g-6 g-lg-14 g-xl-20 align-center flex-row-reverse">
+                            <div class="col-lg-6" data-aos="fade-up-sm" data-aos-delay="50">
+                                <div class="content">
+                                    <p class="text-primary">Fitur 2</p>
+                                    <h1 class=" mb-8">
+                                        Manajemen Soal Tes/Ujian.
+                                    </h1>
+                                    <p class="mb-6">
+                                        Semua hasil pembuatan soal  akan tersimpan di dalam sistem. Anda dapat mengelola soal-soal yang telah dibuat, mengedit, menghapus, dan mengekspornya.
+                                    </p>
+                                    <ul class="list-unstyled list-check mb-8">
+                                        <li>
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18" class="icon">
+                                                <g>
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m3.75 9 3.75 3.75 7.5-7.5" />
+                                                </g>
+                                            </svg>
+                                            <span>Membuat, edit, dan hapus paket soal</span>
+                                        </li>
+                                        <li>
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18" class="icon">
+                                                <g>
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m3.75 9 3.75 3.75 7.5-7.5" />
+                                                </g>
+                                            </svg>
+                                            <span>Pengelompokan paket soal dengan tagging</span>
+                                        </li>
+                                        <li>
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18" class="icon">
+                                                <g>
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m3.75 9 3.75 3.75 7.5-7.5" />
+                                                </g>
+                                            </svg>
+                                            <span>Data tersimpan di cloud</span>
+                                        </li>
+                                    </ul>
+                                    <a href="{{ url_for('auth.sign_up') }}" class="arrow-link arrow-link-primary text-primary gap-3">
+                                        <span>Coba Gratis Sekarang</span>
+                                        <svg class="icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4 12.6667L12.6667 4M12.6667 4V12.32M12.6667 4H4.34667" stroke="currentColor" stroke-width="1.21" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6" data-aos="fade-up-sm" data-aos-delay="100">
+                                <div class="feature-img">
+                                    <img src="{{ url_for('static', filename='front/images/feature/2.jpg') }}" alt="" class="img-fluid" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-lite-blue rounded-4 p-6 p-md-12 px-xl-20 py-xl-12 hover-border">
+                        <div class="row g-6 g-lg-14 g-xl-20 align-center">
+                            <div class="col-lg-6" data-aos="fade-up-sm" data-aos-delay="50">
+                                <div class="content">
+                                    <p class="text-primary">Fitur 3</p>
+                                    <h1 class=" mb-8">Export Paket Soal Anda dalam Satu Klik.
+                                    </h1>
+                                    <p class="mb-6">
+                                        Paket soal sudah siap? Anda dapat mengexport lansung ke format yang Anda inginkan.
+                                    </p>
+                                    <ul class="list-unstyled list-check mb-8">
+                                        <li>
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18" class="icon">
+                                                <g>
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m3.75 9 3.75 3.75 7.5-7.5" />
+                                                </g>
+                                            </svg>
+                                            <span>Export dalam format Ms Word dan PDF</span>
+                                        </li>
+                                        <li>
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18" class="icon">
+                                                <g>
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m3.75 9 3.75 3.75 7.5-7.5" />
+                                                </g>
+                                            </svg>
+                                            <span>Export untuk moodle</span>
+                                        </li>
+                                    </ul>
+                                    <a href="{{ url_for('auth.sign_up') }}" class="arrow-link arrow-link-primary text-primary gap-3">
+                                        <span>Coba Gratis Sekarang</span>
+                                        <svg class="icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4 12.6667L12.6667 4M12.6667 4V12.32M12.6667 4H4.34667" stroke="currentColor" stroke-width="1.21" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6" data-aos="fade-up-sm" data-aos-delay="100">
+                                <div class="feature-img">
+                                    <img src="{{ url_for('static', filename='front/images/feature/3.jpg') }}" alt="" class="img-fluid" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- Use cases -->
+            <section id="use-case" class="pt-10 pt-lg-15 pb-20 pb-lg-30">
+                <div class="container">
+                    <div class="row justify-center mb-18">
+                        <div class="col-lg-9">
+                            <div class="text-center">
+                                <p class="text-primary" data-aos="fade-up-sm" data-aos-delay="50">
+                                    Penggunaan NyoalAI
+                                </p>
+                                <h1 class=" mb-0" data-aos="fade-up-sm" data-aos-delay="100">
+                                    Tidak perlu berlama-lama membuat soal, <span class="text-gradient-1">NyoalAI</span> cocok untuk berbagai kebutuhan.
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-center row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 gx-8 gy-14">
+                        <div class="col" data-aos="fade-up-sm" data-aos-delay="200">
+                            <div class="d-flex flex-column justify-between gap-6 text-center h-full">
+                                <div class="icon text-primary w-14 h-14 rounded-3 flex-shrink-0 d-flex align-center justify-center mx-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 64 64">
+                                        <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                            <path d="M32 10.667 10.667 21.333 32 32l21.333-10.667L32 10.667ZM10.667 32 32 42.667 53.333 32M10.667 42.667 32 53.333l21.333-10.666" />
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div class="content flex-grow-1">
+                                    <h5 class=" mb-4">Latihan</h5>
+                                    <p class="mb-0">
+                                        Anda dapat membuat soal latihan untuk siswa Anda. Soal latihan ini dapat digunakan untuk melatih siswa menghadapi soal-soal ujian.
+                                    </p>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <a href="{{ url_for('auth.sign_up') }}" class="arrow-link arrow-link-primary gap-3 fs-sm">
+                                        <span>Coba Sekarang</span>
+                                        <svg class="icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4 12.6667L12.6667 4M12.6667 4V12.32M12.6667 4H4.34667" stroke="currentColor" stroke-width="1.21" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col" data-aos="fade-up-sm" data-aos-delay="200">
+                            <div class="d-flex flex-column justify-between gap-6 text-center h-full">
+                                <div class="icon text-primary w-14 h-14 rounded-3 flex-shrink-0 d-flex align-center justify-center mx-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 64 64">
+                                        <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                            <path d="M32 10.667 10.667 21.333 32 32l21.333-10.667L32 10.667ZM10.667 32 32 42.667 53.333 32M10.667 42.667 32 53.333l21.333-10.666" />
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div class="content flex-grow-1">
+                                    <h5 class=" mb-4">Kuis</h5>
+                                    <p class="mb-0">
+                                        NyoalAI juga cocok sebagai pembuat kuis untuk mengetahui sejauh mana pemahaman siswa terhadap suatu materi.
+                                    </p>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <a href="{{ url_for('auth.sign_up') }}" class="arrow-link arrow-link-primary gap-3 fs-sm">
+                                        <span>Coba Sekarang</span>
+                                        <svg class="icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4 12.6667L12.6667 4M12.6667 4V12.32M12.6667 4H4.34667" stroke="currentColor" stroke-width="1.21" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col" data-aos="fade-up-sm" data-aos-delay="200">
+                            <div class="d-flex flex-column justify-between gap-6 text-center h-full">
+                                <div class="icon text-primary w-14 h-14 rounded-3 flex-shrink-0 d-flex align-center justify-center mx-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 64 64">
+                                        <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                            <path d="M32 10.667 10.667 21.333 32 32l21.333-10.667L32 10.667ZM10.667 32 32 42.667 53.333 32M10.667 42.667 32 53.333l21.333-10.666" />
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div class="content flex-grow-1">
+                                    <h5 class=" mb-4">Ujian</h5>
+                                    <p class="mb-0">
+                                        Soal-soal ujian juga dapat dibuat oleh NyoalAI. Anda dapat membuat soal ujian dengan berbagai subjek.
+                                    </p>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <a href="{{ url_for('auth.sign_up') }}" class="arrow-link arrow-link-primary gap-3 fs-sm">
+                                        <span>Coba Sekarang</span>
+                                        <svg class="icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4 12.6667L12.6667 4M12.6667 4V12.32M12.6667 4H4.34667" stroke="currentColor" stroke-width="1.21" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- CTA -->
+            <section class="cta-section style-2 py-10 py-lg-15" data-aos="fade-up-sm" data-aos-delay="150">
+                <div class="container">
+                    <div class="rounded-5 border position-relative pt-6 px-6 overflow-hidden bg-striped bg-striped-bottom gradient-bg border-primary">
+                        <div class="row align-center justify-center g-0">
+                            <div class="col-lg-5">
+                                <div class="p-0 pt-md-6 text-center text-lg-start p-lg-6 p-xl-10">
+                                    <h2 class=" mb-6">
+                                        Dengan 
+                                        <span class="text-gradient-1">NyoalAI</span>
+                                        Anda dapat mempercepat pembuatan soal yang melelahkan.
+                                    </h2>
+                                    <a href="{{ url_for('auth.sign_up') }}" class="btn btn-primary">Coba Gratis Sekarang</a>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-7">
+                                <div class="cta-image-container mt-10">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 86 42" class="text-primary arrow-shape">
+                                        <path fill="currentColor" d="M83.007 5.063c-8.303-4.146-19.138-3.888-27.778-.97C46.956 6.888 37.093 13.477 37.1 23.3c0 3.58 2.13 7.126 6.128 6.453 3.714-.623 5.706-4.227 4.922-7.795-2.116-9.638-15.81-9.008-22.92-6.476a30.564 30.564 0 0 0-11.9 7.744c-3.05 3.222-6.07 7.587-6.6 12.094-.075.65.97.914 1.24.332 1.429-3.109 2.544-6.172 4.632-8.935 2.168-2.869 4.92-5.3 7.982-7.161 6.077-3.694 15.03-5.894 21.7-2.497 3.533 1.802 6.914 7.774 2.361 10.55-1.845 1.124-4.263.905-5.36-1.113-1-1.843-.788-4.302-.285-6.253 2.048-7.951 10.417-12.945 17.706-15.252a39.207 39.207 0 0 1 12.77-1.803c4.621.113 8.847 1.265 13.224 2.615.426.133.72-.536.308-.74Z" />
+                                        <path fill="currentColor" d="M85.318 6.107C77.431-.542 66.216-1.539 56.765 2.153 52.217 3.93 48.075 6.62 44.43 9.867c-3.718 3.315-7.686 7.46-9.29 12.29-1.122 3.37-.827 9.393 3.792 9.836 4.065.392 8.748-3.306 9.751-7.167 1.123-4.321-2.065-8.325-5.861-9.91-4.533-1.89-10.034-1.255-14.67-.028C18.004 17.574 9.163 24.89 4.811 34.499c-.414.917.925 1.725 1.358.797 3.22-6.944 8.669-12.606 15.433-16.148 3.447-1.805 7.224-3.029 11.08-3.527 4.417-.568 9.8-.516 12.977 3.1 3.508 3.99 1.106 8.906-3.196 10.993-2.51 1.218-5.217 1.2-6.206-1.88-.804-2.498.079-5.313 1.285-7.533C41.411 13.192 48.878 7.087 56.22 3.912 65.421-.067 76.632.335 84.582 6.835c.51.424 1.248-.296.736-.728Z" />
+                                        <path fill="currentColor" d="M14.65 30.337c-1.917.849-3.728 1.993-5.56 3.01-.866.48-1.735.96-2.602 1.445-.4.223-2.362 1.634-2.766 1.416-.21-.111-.02-2.62-.02-2.95l-.022-2.95c-.015-1.918.346-4.259-.32-6.075-.237-.65-1.107-.667-1.334.005-.423 1.245-.241 2.569-.222 3.873.02 1.474.044 2.95.065 4.423.022 1.364-.587 4.544.89 5.408 1.41.826 3.676-1.342 4.81-2.007 2.547-1.49 5.266-2.848 7.666-4.563a.595.595 0 0 0-.585-1.035Z" />
+                                        <path fill="currentColor" d="M14.241 29.944c-1.847 1.293-3.383 3.118-5.07 4.618-1.96 1.739-3.985 3.433-6.174 4.873l1.349.775a76.48 76.48 0 0 1 .125-7.34c.158-2.375.909-4.93.706-7.287-.06-.686-1.104-1.162-1.452-.39-.928 2.06-.94 4.768-1.106 6.995a64.81 64.81 0 0 0-.072 8.036c.042.81.939 1.134 1.53.635 1.972-1.665 3.983-3.264 5.88-5.02 1.705-1.578 3.703-3.259 4.913-5.258.224-.38-.243-.907-.629-.637Z" />
+                                        <path fill="currentColor" d="M14.98 28.142C10.7 32.102 6.441 36.087 2.12 40l1.531.634c-.332-2.723-.642-5.443-.777-8.184-.123-2.526.22-5.24-.273-7.715-.155-.782-1.317-.715-1.506.006-.67 2.525-.275 5.5-.115 8.079.166 2.698.443 5.394.902 8.056.118.686 1.054.85 1.499.402 4.119-4.124 8.302-8.18 12.467-12.258.576-.558-.285-1.422-.87-.878Z" />
+                                    </svg>
+                                    <div class="cta-img rounded-top-4">
+                                        <img src="{{ url_for('static', filename='front/images/screens/screen-7.jpg') }}" alt="" class="img-fluid w-full h-full object-cover" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer bg-color-blur pt-10 pt-lg-15">
+            <div class="container">
+                <div class="row g-10">
+                    <div class="col-lg-9 col-xl-8 order-lg-2">
+                        <div class="row g-6">
+                            <div class="col-md-4 col-lg-4">
+                                <div class="footer-widget text-center text-md-start">
+                                    <h6 class=" mb-2">NyoalAI</h6>
+                                    <ul class="link-list list-unstyled mb-0">
+                                        <li>
+                                            <a href="#about">Tentang</a>
+                                        </li>
+                                        <li>
+                                            <a href="#feature">Fitur</a>
+                                        </li>
+                                        <li>
+                                            <a href="#use-case">Penggunaan</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ url_for('auth.sign_up') }}">Daftar</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ url_for('auth.sign_in') }}">Masuk</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <div class="footer-widget text-center text-md-start">
+                                    <h6 class=" mb-2">Links</h6>
+                                    <ul class="link-list list-unstyled mb-0">
+                                        <li>
+                                            <a href="https://www.pnj.ac.id" target="_blank">Politeknik Negeri Jakarta</a>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.tik.pnj.ac.id" target="_blank">Jurusan TIK PNJ</a>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.kemdikbud.go.id/" target="_blank">Kemdikbud</a>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.vokasi.kemdikbud.go.id/" target="_blank">Vokasi</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <div class="footer-widget text-center text-md-start">
+                                    <h6 class="mb-3">Source Code</h6>
+                                    <ul class="list-unstyled d-flex flex-wrap align-center justify-center justify-md-start gap-3 social-list mb-0">
+                                        <li>
+                                            <a href="https://github.com/adirizq/nyoal-ai" target="_blank" class="p-0">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                                                    <path stroke="none" d="M0 0h24v24H0z" />
+                                                    <path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21" />
+                                                </svg>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <h6 class="mt-5 mb-3">Credits</h6>
+                                    <ul class="link-list list-unstyled mb-0">
+                                        <li>
+                                            <a href="http://www.freepik.com" target="_blank">Freepik (Illustrasi)</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 order-lg-1 me-auto">
+                        <div class="footer-widget text-center text-lg-start">
+                            <a href="">
+                                <img src="{{ url_for('static', filename='front/images/logo/logo-horizontal.svg') }}" alt="" class="img-fluid" width="135" />
+                            </a>
+                            <p class="fs-sm mb-0 mt-4">
+                                Kecerdasan buatan yang membantu meringkankan beban dalam pembuatan soal secara manual.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center py-6 mt-8">
+                    <p class="fs-sm mb-0">
+                        Copyright <span class="text-gradient-1">NyoalAI</span>.
+                        Created by Rizky Adi
+                    </p>
+                </div>
+            </div>
+
+        </footer>
+
+    </div>
+{% endblock content %}
+
