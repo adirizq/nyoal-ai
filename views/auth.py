@@ -1,8 +1,10 @@
 import os
 import sys
+import json
 
 from flask import Blueprint, render_template, flash, request, redirect, url_for
 from flask_login import login_user, logout_user, current_user
+from requests.exceptions import HTTPError
 
 from firebase_config import firebase_auth, firebase_db
 from utils import login_manager
@@ -55,8 +57,19 @@ def sign_in():
 
         try:
             user_docs = firebase_auth.sign_in_with_email_and_password(email, password)
-        except:
-            flash('Email atau password salah', 'error')
+
+        except HTTPError as e:
+            error_message = json.loads(e.strerror)['error']['message']
+
+            if 'INVALID_LOGIN_CREDENTIALS' in error_message:
+                error_message = 'Email atau password salah'
+
+            flash(error_message, 'error')
+            return render_template('front/auth/sign_up.html')
+        
+        except Exception as e:
+            flash('Server error', 'error')
+            print(e)
             return render_template('front/auth/sign_in.html')
         
         user_id = user_docs['localId']
@@ -107,8 +120,21 @@ def sign_up():
             flash('Akun berhasil dibuat', 'success')
             return redirect(url_for('auth.sign_in'))
         
+        except HTTPError as e:
+            error_message = json.loads(e.strerror)['error']['message']
+
+            if 'WEAK_PASSWORD' in error_message:
+                error_message = 'Password minimal 6 karakter'
+
+            if 'EMAIL_EXISTS' in error_message:
+                error_message = 'Email sudah terdaftar'
+
+            flash(error_message, 'error')
+            return render_template('front/auth/sign_up.html')
+
         except Exception as e:
-            flash(e, 'error')
+            flash('Server error', 'error')
+            print(e)
             return render_template('front/auth/sign_up.html')
         
     return render_template('front/auth/sign_up.html')
@@ -130,6 +156,11 @@ def forgot_password():
             firebase_auth.send_password_reset_email(email)
             flash('Email reset password telah dikirim', 'success')
             return redirect(url_for('auth.sign_in'))
+        
+        except HTTPError as e:
+            error_message = json.loads(e.strerror)['error']['message']
+            flash(error_message, 'error')
+            return render_template('front/auth/sign_up.html')
         
         except Exception as e:
             flash(e, 'error')
