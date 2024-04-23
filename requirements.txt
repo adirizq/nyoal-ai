@@ -1,2 +1,5 @@
+firebase_admin==6.5.0
 Flask==3.0.3
+Flask_Login==0.6.3
+Pyrebase4==4.7.1
 python-dotenv==1.0.1
