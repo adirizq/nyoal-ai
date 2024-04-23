@@ -21,11 +21,21 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='front/css/plugins.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='front/css/style.css') }}" />
 
+    <style>
+        .alert-danger {
+            background-color: rgba(220, 53, 69, 0.05) !important;
+        }
+        
+        .alert-success {
+            background-color: rgba(25, 135, 84, 0.05) !important;
+        }
+    </style>
+
     {% block style %}{% endblock style %}
 </head>
 
 <body>
-    
+
     {% block content %} {% endblock content %}
 
     <!-- JS -->

@@ -1,5 +1,6 @@
 import os
 import sys
+import utils
 
 from dotenv import load_dotenv
 from flask import Flask, render_template
@@ -7,9 +8,15 @@ from flask import Flask, render_template
 from views import views
 
 
-load_dotenv()
+load_dotenv(override=True)
+
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
+app.secret_key = os.getenv('SECRET_KEY')
+
+
+utils.init_login_manager(app)
+
 
 for view in views:
     app.register_blueprint(view)
