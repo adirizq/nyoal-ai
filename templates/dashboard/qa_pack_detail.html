@@ -1,0 +1,301 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}NyoalAI - Dashboard - Paket Soal{% endblock title %}
+
+{% block style %}
+<link href="{{ url_for('static', filename='dashboard/css/tabler-vendors.min.css') }}" rel="stylesheet" />
+{% endblock style %}
+
+{% block content %}
+<!-- Page header -->
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <!-- Page pre-title -->
+                <div class="page-pretitle">
+                    Paket Soal Detail
+                </div>
+                <h2 class="page-title">
+                    Ulangan Harian IPA - Taksonomi &nbsp;&nbsp;<span class="status status-primary">IPA</span>
+                </h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row row-deck row-cards">
+            <div class="col-lg-5 d-block">
+                <div class="position-sticky" style="top: 130px;">
+                    <div class="w-100 bg-white">
+                        <div class="accordion" id="accordion-general-information">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading-1">
+                                    <button class="accordion-button fw-bold fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="true">
+                                        Informasi Umum
+                                    </button>
+                                </h2>
+                                <div id="collapse-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-general-information" style="">
+                                    <div class="accordion-body pt-0">
+                                        <div class="mb-3">
+                                            <label class="form-label">Nama</label>
+                                            <input type="text" class="form-control" name="name" placeholder="Nama paket soal" value="Ulangan Harian IPA - Taksonomi" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Tag</label>
+                                            <select type="text" class="form-select" placeholder="Select tags" id="select-tags" value="" multiple>
+                                                <option value="IPA" selected>IPA</option>
+                                                <option value="IPS">IPS</option>
+                                                <option value="Matematika">Matematika</option>
+                                            </select>
+                                        </div>
+                                        <div class="w-100 text-end">
+                                            <a href="#" class="btn btn-primary">Simpan</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading-2">
+                                    <button class="accordion-button fw-bold fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-2" aria-expanded="true">
+                                        Buat Soal Otomatis
+                                    </button>
+                                </h2>
+                                <div id="collapse-2" class="accordion-collapse collapse show" data-bs-parent="#accordion-general-information" style="">
+                                    <div class="accordion-body pt-0">
+                                        <div class="alert alert-warning mb-4">
+                                            <div class="d-flex">
+                                                <div class="me-3">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-alert-triangle">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                        <path d="M12 9v4" />
+                                                        <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" />
+                                                        <path d="M12 16h.01" />
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <div>Hanya mendukung teks Bahasa Indonesia non-matematis.</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <label class="form-label">Materi <span class="form-label-description">548/1024</span></label>
+                                        <textarea class="form-control mb-3" name="example-textarea-input" rows="12" placeholder="Content..">Tetikus atau mouse adalah peranti penunjuk yang digunakan untuk memasukkan data dan perintah ke dalam komputer selain dengan papan ketik. Mouse memperoleh nama demikian karena kabel yang menjulur berbentuk seperti ekor tikus. &#13;&#10;&#13;&#10;Mouse pertama kali dibuat pada tahun 1963 oleh Douglas Engelbart yang berbahan dasar kayu dengan satu tombol. Model kedua sudah dilengkapi dengan tiga tombol. Pada tahun 1970, Douglas Engelbart memperkenalkan Mouse yang dapat mengetahui posisi X-Y pada layar komputer, Mouse ini dikenal dengan nama Indikator Posisi X-Y.</textarea>
+                                        <div class="row justify-content-end">
+                                            <div class="col-auto">
+                                                <a href="#" class="btn btn-warning btn-icon w-100">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-reload">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                        <path d="M19.933 13.041a8 8 0 1 1 -9.925 -8.788c3.899 -1 7.935 1.007 9.425 4.747" />
+                                                        <path d="M20 4v5h-5" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                            <div class="col-auto">
+                                                <a href="#" class="btn btn-success btn-icon w-100">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                        <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+                                                        <path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                            <div class="col-auto">
+                                                <a href="#" class="btn btn-primary w-100">
+                                                    Buat Soal <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right me-0 ms-2">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                        <path d="M5 12l14 0" />
+                                                        <path d="M13 18l6 -6" />
+                                                        <path d="M13 6l6 6" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Daftar Soal</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-warning mb-4">
+                            <div class="d-flex">
+                                <div class="me-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-alert-triangle">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M12 9v4" />
+                                        <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" />
+                                        <path d="M12 16h.01" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div>Selalu cek kembali hasil prediksi soal & jawaban sebelum digunakan.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-3">
+                            <div class="card-header p-2">
+                                <div class="d-flex justify-content-between w-100">
+                                    <div class="card-title fs-4 lh-1">Soal #1</div>
+                                    <a href="" class="text-danger lh-1" data-bs-toggle="modal" data-bs-target="#modal-delete-qa">Hapus</a>
+                                </div>
+                            </div>
+                            <div class="card-body p-2">
+                                <div class="mb-3">
+                                    <label class="form-label">Pertanyaan</label>
+                                    <textarea class="form-control mb-3" name="example-textarea-input" rows="3" placeholder="Pertanyaan">Apa peranti penunjuk yang digunakan untuk memasukkan data dan perintah ke dalam komputer selain dengan papan ketik?</textarea>
+                                </div>
+                                <div>
+                                    <label class="form-label">Jawaban</label>
+                                    <textarea class="form-control" name="example-textarea-input" rows="2" placeholder="Jawaban">Tetikus atau mouse</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-3">
+                            <div class="card-header p-2">
+                                <div class="d-flex justify-content-between w-100">
+                                    <div class="card-title fs-4 lh-1">Soal #2</div>
+                                    <a href="" class="text-danger lh-1" data-bs-toggle="modal" data-bs-target="#modal-delete-qa">Hapus</a>
+                                </div>
+                            </div>
+                            <div class="card-body p-2">
+                                <div class="mb-3">
+                                    <label class="form-label">Pertanyaan</label>
+                                    <textarea class="form-control mb-3" name="example-textarea-input" rows="3" placeholder="Pertanyaan">Apa peranti penunjuk yang digunakan untuk memasukkan data dan perintah ke dalam komputer selain dengan papan ketik?</textarea>
+                                </div>
+                                <div>
+                                    <label class="form-label">Jawaban</label>
+                                    <textarea class="form-control" name="example-textarea-input" rows="2" placeholder="Jawaban">Tetikus atau mouse</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-3">
+                            <div class="card-header p-2">
+                                <div class="d-flex justify-content-between w-100">
+                                    <div class="card-title fs-4 lh-1">Soal #3</div>
+                                    <a href="" class="text-danger lh-1" data-bs-toggle="modal" data-bs-target="#modal-delete-qa">Hapus</a>
+                                </div>
+                            </div>
+                            <div class="card-body p-2">
+                                <div class="mb-3">
+                                    <label class="form-label">Pertanyaan</label>
+                                    <textarea class="form-control mb-3" name="example-textarea-input" rows="3" placeholder="Pertanyaan">Apa peranti penunjuk yang digunakan untuk memasukkan data dan perintah ke dalam komputer selain dengan papan ketik?</textarea>
+                                </div>
+                                <div>
+                                    <label class="form-label">Jawaban</label>
+                                    <textarea class="form-control" name="example-textarea-input" rows="2" placeholder="Jawaban">Tetikus atau mouse</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-3">
+                            <div class="card-header p-2">
+                                <div class="d-flex justify-content-between w-100">
+                                    <div class="card-title fs-4 lh-1">Soal #4</div>
+                                    <a href="" class="text-danger lh-1" data-bs-toggle="modal" data-bs-target="#modal-delete-qa">Hapus</a>
+                                </div>
+                            </div>
+                            <div class="card-body p-2">
+                                <div class="mb-3">
+                                    <label class="form-label">Pertanyaan</label>
+                                    <textarea class="form-control mb-3" name="example-textarea-input" rows="3" placeholder="Pertanyaan"></textarea>
+                                </div>
+                                <div>
+                                    <label class="form-label">Jawaban</label>
+                                    <textarea class="form-control" name="example-textarea-input" rows="2" placeholder="Jawaban"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-100">
+                            <a href="#" class="btn btn-success w-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-circle-plus">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                                    <path d="M9 12h6" />
+                                    <path d="M12 9v6" />
+                                </svg>
+                                Tambah Soal
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-footer text-end">
+                        <a href="#" class="btn btn-primary">Simpan</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+
+{% block modal %}
+<div class="modal modal-blur fade" id="modal-delete-qa" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+            <div class="modal-body text-center py-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path>
+                    <path d="M12 9v4"></path>
+                    <path d="M12 17h.01"></path>
+                </svg>
+                <h3>Hapus soal?</h3>
+                <div class="text-muted">Apakah Anda yakin menghapus <b>Soal #1</b>? <br>Soal yang dihapus tidak dapat dikembalikan.</div>
+            </div>
+            <div class="modal-footer">
+                <div class="w-100">
+                    <div class="row">
+                        <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                Batal
+                            </a></div>
+                        <div class="col"><a href="#" class="btn btn-danger w-100" data-bs-dismiss="modal">
+                                Hapus
+                            </a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock modal %}
+
+
+{% block script %}
+<script src="{{ url_for('static', filename='dashboard/libs/tom-select/dist/js/tom-select.base.min.js') }}" defer></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var el;
+        window.TomSelect && (new TomSelect(el = document.getElementById('select-tags'), {
+            copyClassesToDropdown: false,
+            dropdownParent: 'body',
+            controlInput: '<input>',
+            render: {
+                item: function (data, escape) {
+                    if (data.customProperties) {
+                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                    }
+                    return '<div>' + escape(data.text) + '</div>';
+                },
+                option: function (data, escape) {
+                    if (data.customProperties) {
+                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                    }
+                    return '<div>' + escape(data.text) + '</div>';
+                },
+            },
+        }));
+    });
+</script>
+{% endblock script %}

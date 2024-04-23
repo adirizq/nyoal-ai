@@ -13,6 +13,12 @@ def index():
     return render_template('dashboard/index.html', title=title)
 
 
+@dashboard.route('/qa-pack')
+def qa_pack():
+    title = 'paket_soal'
+    return render_template('dashboard/qa_pack.html', title=title)
+
+
 @dashboard.route('/tag')
 def tag():
     title = 'tag'
