@@ -65,7 +65,7 @@ def sign_in():
                 error_message = 'Email atau password salah'
 
             flash(error_message, 'error')
-            return render_template('front/auth/sign_up.html')
+            return render_template('front/auth/sign_in.html')
         
         except Exception as e:
             flash('Server error', 'error')
