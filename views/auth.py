@@ -53,7 +53,12 @@ def sign_in():
             flash('Email dan password harus diisi', 'error')
             return render_template('front/auth/sign_in.html')
 
-        user_docs = firebase_auth.sign_in_with_email_and_password(email, password)
+        try:
+            user_docs = firebase_auth.sign_in_with_email_and_password(email, password)
+        except:
+            flash('Email atau password salah', 'error')
+            return render_template('front/auth/sign_in.html')
+        
         user_id = user_docs['localId']
 
         user = load_user(user_id)
