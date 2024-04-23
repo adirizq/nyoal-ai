@@ -9,4 +9,11 @@ dashboard = Blueprint('dashboard', __name__, template_folder='templates', url_pr
 
 @dashboard.route('/')
 def index():
-    return render_template('dashboard/index.html')
+    title = 'uji_coba'
+    return render_template('dashboard/index.html', title=title)
+
+
+@dashboard.route('/tag')
+def tag():
+    title = 'tag'
+    return render_template('dashboard/tag.html', title=title)
