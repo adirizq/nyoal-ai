@@ -141,11 +141,14 @@
 {% endblock content %}
 
 {% block modal %}
-<div class="modal modal-blur fade" id="loading-modal" tabindex="-1" style="display: none;" aria-hidden="true">
+<div class="modal modal-blur fade" id="loading-modal" tabindex="-1" style="display: none;" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
   <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-body">
         <div class="modal-title text-center">Loading</div>
+        <div class="w-100 text-center">
+          <div class="spinner-border text-muted" role="status"></div>
+        </div>
         <div class="text-center">Harap tunggu sejenak. NyoalAI sedang membuat soal untukmu.</div>
       </div>
     </div>
@@ -156,6 +159,8 @@
 {% block script %}
 <script>
   $(document).ready(function () {
+    $("#loading-modal").modal('show');
+
     $('#reset-button').click(function () {
       $('#prediction-form')[0].reset();
     });
@@ -163,24 +168,25 @@
     $("#paste-button").click(function () {
       navigator.clipboard.readText().then(function (text) {
         $("#context").val(text);
+        $("#context").trigger('input');
       });
     });
 
     var max_length = 1024;
 
-    $("#context").keyup(function () {
+    $("#context").on('input', function () {
       var length = $(this).val().length;
       var remaining_length = max_length - length;
-      $('#char-indicator').text(length + '/' + max_length);
       if (remaining_length < 0) {
         $(this).val($(this).val().substring(0, max_length));
       }
+      $('#char-indicator').text($(this).val().length + '/' + max_length);
     });
 
-    $('#prediction-form').submit(function(e) {
-        e.preventDefault();
-        $("#loading-modal").modal('show');
-        this.submit();
+    $('#prediction-form').submit(function (e) {
+      e.preventDefault();
+      $("#loading-modal").modal('show');
+      this.submit();
     });
   });
 </script>
