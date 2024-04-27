@@ -1,11 +1,13 @@
 import os
 import sys
 
+from models.tag import Tag
 from model_inference import ModelInference
-from dotenv import load_dotenv
 
 from flask import Blueprint, render_template, request
-from flask_login import login_required
+from flask_login import login_required, current_user
+from dotenv import load_dotenv
+
 
 load_dotenv()
 
@@ -15,6 +17,7 @@ model_inference = ModelInference(
     project_id=os.getenv('MODEL_PROJECT_ID'),
     endpoint_id=os.getenv('MODEL_END_POINT_ID'),
 )
+
 
 @dashboard.route('/', methods=['GET', 'POST'])
 @login_required
@@ -33,5 +36,6 @@ def qa_pack():
 @dashboard.route('/tag')
 @login_required
 def tag():
+    tags = Tag.get_all_dict(current_user)
     title = 'tag'
-    return render_template('dashboard/tag.html', title=title)
+    return render_template('dashboard/tag.html', title=title, tags=tags)

@@ -9,58 +9,93 @@
 -->
 <html lang="id">
 
-  <head>
+<head>
 
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-    <title>{% block title %}{% endblock title %}</title>
+  <title>{% block title %}{% endblock title %}</title>
 
-    <!-- Favicon -->
-    <link rel="icon" href="{{ url_for('static', filename='dashboard/img/logo/logo-main.svg') }}" type="image/svg+xml" />
+  <!-- Favicon -->
+  <link rel="icon" href="{{ url_for('static', filename='dashboard/img/logo/logo-main.svg') }}" type="image/svg+xml" />
 
-    <!-- CSS files -->
-    <link href="{{ url_for('static', filename='dashboard/css/tabler.min.css') }}" rel="stylesheet"/>
+  <!-- CSS files -->
+  <link href="{{ url_for('static', filename='dashboard/css/tabler.min.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='dashboard/libs/noty/lib/noty.css') }}" rel="stylesheet" type="text/css">
+  <link href="{{ url_for('static', filename='dashboard/libs/noty/lib/themes/semanticui.css') }}" rel="stylesheet" type="text/css">
+  <link href="{{ url_for('static', filename='dashboard/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css">
 
-    <!-- JS files -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+  <!-- JS files -->
+  <script src="{{ url_for('static', filename='dashboard/libs/jquery/jquery.min.js') }}" type="text/javascript"></script>
+  <script src="{{ url_for('static', filename='dashboard/libs/noty/lib/noty.min.js') }}" type="text/javascript"></script>
+  <script src="{{ url_for('static', filename='dashboard/libs/datatables/datatables.min.js') }}" type="text/javascript"></script>
 
-    <style>
-      @import url('https://rsms.me/inter/inter.css');
-      :root {
-      	--tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
-      }
-      body {
-      	font-feature-settings: "cv03", "cv04", "cv11";
-      }
-    </style>
+  <style>
+    @import url('https://rsms.me/inter/inter.css');
 
-    {% block style %} {% endblock style %}
+    :root {
+      --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+    }
 
-  </head>
-  
-  <body >
+    body {
+      font-feature-settings: "cv03", "cv04", "cv11";
+    }
 
-    <script src="{{ url_for('static', filename='dashboard/js/demo-theme.min.js') }}"></script>
+    #table_wrapper > .row:nth-child(1) {
+      margin: 1rem 1.5rem !important;
+    }
 
-    <div class="page">
-      
-      {% include 'dashboard/partials/navbar.html' %}
-      
-      <div class="page-wrapper">
-        {% block content %}{% endblock content %}
+    #table_wrapper > .row:nth-child(2) {
+      border-top: var(--tblr-border-width) var(--tblr-border-style) rgba(4,32,69,.14) !important;
+    }
 
-        {% include 'dashboard/partials/footer.html' %}
-      </div>
+    #table_wrapper > .row:nth-child(3) {
+      margin: 1rem 1.5rem !important;
+    }
+  </style>
 
-      {% block modal %}{% endblock modal %}
+  {% block style %} {% endblock style %}
 
+</head>
+
+<body>
+
+  <div class="page">
+
+    {% include 'dashboard/partials/navbar.html' %}
+
+    <div class="page-wrapper">
+      {% block content %}{% endblock content %}
+
+      {% include 'dashboard/partials/footer.html' %}
     </div>
 
-    <script src="{{ url_for('static', filename='dashboard/js/tabler.min.js') }}" defer></script>
+    {% block modal %}{% endblock modal %}
 
-    {% block script %}{% endblock script %}
+  </div>
 
-  </body>
+  <script src="{{ url_for('static', filename='dashboard/js/tabler.min.js') }}" defer></script>
+
+  <script>
+    {% with messages = get_flashed_messages(with_categories = true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    new Noty({
+      type: '{{ category }}',
+      layout: 'topRight',
+      text: `{{ message | safe }}`,
+      theme: 'semanticui',
+      timeout: 3000,
+      progressBar: true,
+    }).show();
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+  </script>
+
+  {% block script %}{% endblock script %}
+
+</body>
+
 </html>
