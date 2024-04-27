@@ -1,7 +1,7 @@
 # nyoal-ai
 My Thesis about Indonesian Question-Answer Pair Generation
 
-## GCP Cloud Run Demo
+## Demo
 ```
-https://nyoal-ai-a7noa6h3la-as.a.run.app
+https://nyoal-ai.rizky-adi.my.id/
 ```
