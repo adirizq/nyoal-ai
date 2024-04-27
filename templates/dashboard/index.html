@@ -45,38 +45,40 @@
                 </div>
               </div>
             </div>
-            <label class="form-label">Materi <span class="form-label-description">548/1024</span></label>
-            <textarea class="form-control mb-3" name="example-textarea-input" rows="12" placeholder="Content..">Tetikus atau mouse adalah peranti penunjuk yang digunakan untuk memasukkan data dan perintah ke dalam komputer selain dengan papan ketik. Mouse memperoleh nama demikian karena kabel yang menjulur berbentuk seperti ekor tikus. &#13;&#10;&#13;&#10;Mouse pertama kali dibuat pada tahun 1963 oleh Douglas Engelbart yang berbahan dasar kayu dengan satu tombol. Model kedua sudah dilengkapi dengan tiga tombol. Pada tahun 1970, Douglas Engelbart memperkenalkan Mouse yang dapat mengetahui posisi X-Y pada layar komputer, Mouse ini dikenal dengan nama Indikator Posisi X-Y.</textarea>
-            <div class="row justify-content-end">
-              <div class="col-auto">
-                <a href="#" class="btn btn-warning w-100">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-reload">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M19.933 13.041a8 8 0 1 1 -9.925 -8.788c3.899 -1 7.935 1.007 9.425 4.747" />
-                    <path d="M20 4v5h-5" />
-                  </svg> Reset
-                </a>
+            <form method="POST" id="prediction-form">
+              <label class="form-label">Materi <span class="form-label-description" id="char-indicator">0/1024</span></label>
+              <textarea class="form-control mb-3" id="context" name="context" rows="12" placeholder="Content..">{% if context %}{{ context }}{% endif %}</textarea>
+              <div class="row justify-content-end">
+                <div class="col-auto">
+                  <div id="reset-button" class="btn btn-warning w-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-reload">
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M19.933 13.041a8 8 0 1 1 -9.925 -8.788c3.899 -1 7.935 1.007 9.425 4.747" />
+                      <path d="M20 4v5h-5" />
+                    </svg> Reset
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <div id="paste-button" class="btn btn-success w-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard">
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+                      <path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+                    </svg> Paste
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <button submit class="btn btn-primary w-100">
+                    Buat Soal <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right me-0 ms-2">
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M5 12l14 0" />
+                      <path d="M13 18l6 -6" />
+                      <path d="M13 6l6 6" />
+                    </svg>
+                  </button>
+                </div>
               </div>
-              <div class="col-auto">
-                <a href="#" class="btn btn-success w-100">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
-                    <path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
-                  </svg> Paste
-                </a>
-              </div>
-              <div class="col-auto">
-                <a href="#" class="btn btn-primary w-100">
-                  Buat Soal <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right me-0 ms-2">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M5 12l14 0" />
-                    <path d="M13 18l6 -6" />
-                    <path d="M13 6l6 6" />
-                  </svg>
-                </a>
-              </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>
@@ -101,30 +103,34 @@
                 </div>
               </div>
             </div>
+            {% if predictions %}
+            {% for pred in predictions %}
             <div class="card mb-3">
               <div class="card-body">
                 <span class="badge bg-primary text-white">Pertanyaan</span>
-                <p>Apa peranti penunjuk yang digunakan untuk memasukkan data dan perintah ke dalam komputer selain dengan papan ketik?</p>
+                <p>{{ pred['question'] }}</p>
                 <span class="badge bg-success text-white">Jawaban</span>
-                <p>Tetikus atau mouse</p>
+                <p>{{ pred['answer'] }}</p>
               </div>
             </div>
-            <div class="card mb-3">
-              <div class="card-body">
-                <span class="badge bg-primary text-white">Pertanyaan</span>
-                <p>Apa peranti penunjuk yang digunakan untuk memasukkan data dan perintah ke dalam komputer selain dengan papan ketik?</p>
-                <span class="badge bg-success text-white">Jawaban</span>
-                <p>Tetikus atau mouse</p>
+            {% endfor %}
+            {% else %}
+            <div class="alert alert-info mb-4">
+              <div class="d-flex">
+                <div class="me-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-info-square-rounded">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M12 9h.01" />
+                    <path d="M11 12h1v4h1" />
+                    <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" />
+                  </svg>
+                </div>
+                <div>
+                  <div>Silahkan isi materi dan klik "Buat Soal".</div>
+                </div>
               </div>
             </div>
-            <div class="card mb-3">
-              <div class="card-body">
-                <span class="badge bg-primary text-white">Pertanyaan</span>
-                <p>Apa peranti penunjuk yang digunakan untuk memasukkan data dan perintah ke dalam komputer selain dengan papan ketik?</p>
-                <span class="badge bg-success text-white">Jawaban</span>
-                <p>Tetikus atau mouse</p>
-              </div>
-            </div>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -133,3 +139,49 @@
 </div>
 
 {% endblock content %}
+
+{% block modal %}
+<div class="modal modal-blur fade" id="loading-modal" tabindex="-1" style="display: none;" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="modal-title text-center">Loading</div>
+        <div class="text-center">Harap tunggu sejenak. NyoalAI sedang membuat soal untukmu.</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock modal %}
+
+{% block script %}
+<script>
+  $(document).ready(function () {
+    $('#reset-button').click(function () {
+      $('#prediction-form')[0].reset();
+    });
+
+    $("#paste-button").click(function () {
+      navigator.clipboard.readText().then(function (text) {
+        $("#context").val(text);
+      });
+    });
+
+    var max_length = 1024;
+
+    $("#context").keyup(function () {
+      var length = $(this).val().length;
+      var remaining_length = max_length - length;
+      $('#char-indicator').text(length + '/' + max_length);
+      if (remaining_length < 0) {
+        $(this).val($(this).val().substring(0, max_length));
+      }
+    });
+
+    $('#prediction-form').submit(function(e) {
+        e.preventDefault();
+        $("#loading-modal").modal('show');
+        this.submit();
+    });
+  });
+</script>
+{% endblock script %}
