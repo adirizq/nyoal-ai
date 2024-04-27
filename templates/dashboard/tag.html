@@ -3,17 +3,17 @@
 {% block title %}NyoalAI - Dashboard - Tag{% endblock title %}
 
 {% block style %}
-    <style>
-        .square-color {
-            display: block;
-            width: 1.5rem;
-            height: 1.5rem;
-            color: #ffffff;
-            border: var(--tblr-border-width) var(--tblr-border-style) var(--tblr-border-color-translucent);
-            border-radius: 3px;
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        }
-    </style>
+<style>
+    .square-color {
+        display: block;
+        width: 1.5rem;
+        height: 1.5rem;
+        color: #ffffff;
+        border: var(--tblr-border-width) var(--tblr-border-style) var(--tblr-border-color-translucent);
+        border-radius: 3px;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+</style>
 {% endblock style %}
 
 {% block content %}
@@ -62,25 +62,8 @@
                     <div class="card-header">
                         <h3 class="card-title">Data Tag</h3>
                     </div>
-                    <div class="card-body border-bottom py-3">
-                        <div class="d-flex">
-                            <div class="text-muted">
-                                Show
-                                <div class="mx-2 d-inline-block">
-                                    <input type="text" class="form-control form-control-sm" value="8" size="3" aria-label="Invoices count">
-                                </div>
-                                entries
-                            </div>
-                            <div class="ms-auto text-muted">
-                                Search:
-                                <div class="ms-2 d-inline-block">
-                                    <input type="text" class="form-control form-control-sm" aria-label="Search invoice">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="table-responsive">
-                        <table class="table card-table table-vcenter text-nowrap datatable">
+                        <table id="table" class="table card-table table-vcenter text-nowrap datatable">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -90,10 +73,42 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for tag in tags %}
                                 <tr>
+                                    <td><span class="text-muted">{{ loop.index }}</span></td>
+                                    <td><span class="status status-{{ tag['color'] }} h5 m-0">{{ tag['name'] }}</span></td>
+                                    <td>
+                                        <div class="d-flex justify-content-end"><span class="square-color bg-{{ tag['color'] }}"></span></div>
+                                    </td>
+                                    <td class="text-end">
+                                        <button class="btn btn-warning btn-icon" onclick="update_tag('{{ tag.id }}', '{{ tag.name }}', '{{ tag.color }}')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                <path d="M16 5l3 3" />
+                                            </svg>
+                                        </button>
+                                        <button class="btn btn-danger btn-icon" onclick="delete_tag('{{ tag.id }}', '{{ tag.name }}')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M4 7l16 0" />
+                                                <path d="M10 11l0 6" />
+                                                <path d="M14 11l0 6" />
+                                                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+                                {# <tr>
                                     <td><span class="text-muted">1</span></td>
                                     <td><span class="status status-primary h5 m-0">IPA</span></td>
-                                    <td><div><span class="square-color bg-primary"></span></div></td>
+                                    <td>
+                                        <div><span class="square-color bg-primary"></span></div>
+                                    </td>
                                     <td class="text-end">
                                         <a class="btn btn-warning btn-icon" href="#" data-bs-toggle="modal" data-bs-target="#modal-edit-tag">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
@@ -114,88 +129,9 @@
                                             </svg>
                                         </a>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td><span class="text-muted">2</span></td>
-                                    <td><span class="status status-success h5 m-0">IPS</span></td>
-                                    <td><span class="square-color bg-success"></span></td>
-                                    <td class="text-end">
-                                        <a class="btn btn-warning btn-icon" href="#" data-bs-toggle="modal" data-bs-target="#modal-edit-tag">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                                <path d="M16 5l3 3" />
-                                            </svg>
-                                        </a>
-                                        <a class="btn btn-danger btn-icon" href="#" data-bs-toggle="modal" data-bs-target="#modal-delete-tag">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M4 7l16 0" />
-                                                <path d="M10 11l0 6" />
-                                                <path d="M14 11l0 6" />
-                                                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                            </svg>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><span class="text-muted">3</span></td>
-                                    <td><span class="status status-danger h5 m-0">Matematika</span></td>
-                                    <td><span class="square-color bg-danger"></span></td>
-                                    <td class="text-end">
-                                        <a class="btn btn-warning btn-icon" href="#" data-bs-toggle="modal" data-bs-target="#modal-edit-tag">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                                <path d="M16 5l3 3" />
-                                            </svg>
-                                        </a>
-                                        <a class="btn btn-danger btn-icon" href="#" data-bs-toggle="modal" data-bs-target="#modal-delete-tag">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M4 7l16 0" />
-                                                <path d="M10 11l0 6" />
-                                                <path d="M14 11l0 6" />
-                                                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                            </svg>
-                                        </a>
-                                    </td>
-                                </tr>
+                                </tr> #}
                             </tbody>
                         </table>
-                    </div>
-                    <div class="card-footer d-flex align-items-center">
-                        <p class="m-0 text-muted">Showing <span>1</span> to <span>8</span> of <span>16</span> entries</p>
-                        <ul class="pagination m-0 ms-auto">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                                    <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M15 6l-6 6l6 6"></path>
-                                    </svg>
-                                    prev
-                                </a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">4</a></li>
-                            <li class="page-item"><a class="page-link" href="#">5</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">
-                                    next <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M9 6l6 6l-6 6"></path>
-                                    </svg>
-                                </a>
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -208,89 +144,91 @@
 <div class="modal modal-blur fade" id="modal-new-tag" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Tag Baru</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label class="form-label">Nama</label>
-                    <input type="text" class="form-control" name="name" placeholder="Nama tag baru" required>
+            <form action="{{ url_for('tag.create') }}" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tag Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div>
-                    <label class="form-label">Warna tag</label>
-                    <div class="row g-2">
-                        <div class="col-auto">
-                            <label class="form-colorinput">
-                                <input name="color" type="radio" value="dark" class="form-colorinput-input" required>
-                                <span class="form-colorinput-color bg-dark"></span>
-                            </label>
-                        </div>
-                        <div class="col-auto">
-                            <label class="form-colorinput">
-                                <input name="color" type="radio" value="blue" class="form-colorinput-input" required>
-                                <span class="form-colorinput-color bg-blue"></span>
-                            </label>
-                        </div>
-                        <div class="col-auto">
-                            <label class="form-colorinput">
-                                <input name="color" type="radio" value="azure" class="form-colorinput-input" required>
-                                <span class="form-colorinput-color bg-azure"></span>
-                            </label>
-                        </div>
-                        <div class="col-auto">
-                            <label class="form-colorinput">
-                                <input name="color" type="radio" value="indigo" class="form-colorinput-input" required>
-                                <span class="form-colorinput-color bg-indigo"></span>
-                            </label>
-                        </div>
-                        <div class="col-auto">
-                            <label class="form-colorinput">
-                                <input name="color" type="radio" value="purple" class="form-colorinput-input" required>
-                                <span class="form-colorinput-color bg-purple"></span>
-                            </label>
-                        </div>
-                        <div class="col-auto">
-                            <label class="form-colorinput">
-                                <input name="color" type="radio" value="pink" class="form-colorinput-input" required>
-                                <span class="form-colorinput-color bg-pink"></span>
-                            </label>
-                        </div>
-                        <div class="col-auto">
-                            <label class="form-colorinput">
-                                <input name="color" type="radio" value="red" class="form-colorinput-input" required>
-                                <span class="form-colorinput-color bg-red"></span>
-                            </label>
-                        </div>
-                        <div class="col-auto">
-                            <label class="form-colorinput">
-                                <input name="color" type="radio" value="orange" class="form-colorinput-input" required>
-                                <span class="form-colorinput-color bg-orange"></span>
-                            </label>
-                        </div>
-                        <div class="col-auto">
-                            <label class="form-colorinput">
-                                <input name="color" type="radio" value="yellow" class="form-colorinput-input" required>
-                                <span class="form-colorinput-color bg-yellow"></span>
-                            </label>
-                        </div>
-                        <div class="col-auto">
-                            <label class="form-colorinput">
-                                <input name="color" type="radio" value="lime" class="form-colorinput-input" required>
-                                <span class="form-colorinput-color bg-lime"></span>
-                            </label>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nama</label>
+                        <input type="text" class="form-control" name="name" placeholder="Nama tag baru" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Warna tag</label>
+                        <div class="row g-2">
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="dark" class="form-colorinput-input" required>
+                                    <span class="form-colorinput-color bg-dark"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="blue" class="form-colorinput-input" required>
+                                    <span class="form-colorinput-color bg-blue"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="azure" class="form-colorinput-input" required>
+                                    <span class="form-colorinput-color bg-azure"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="indigo" class="form-colorinput-input" required>
+                                    <span class="form-colorinput-color bg-indigo"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="purple" class="form-colorinput-input" required>
+                                    <span class="form-colorinput-color bg-purple"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="pink" class="form-colorinput-input" required>
+                                    <span class="form-colorinput-color bg-pink"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="red" class="form-colorinput-input" required>
+                                    <span class="form-colorinput-color bg-red"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="orange" class="form-colorinput-input" required>
+                                    <span class="form-colorinput-color bg-orange"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="yellow" class="form-colorinput-input" required>
+                                    <span class="form-colorinput-color bg-yellow"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="lime" class="form-colorinput-input" required>
+                                    <span class="form-colorinput-color bg-lime"></span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
-                    Batal
-                </a>
-                <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
-                    Simpan tag baru
-                </a>
-            </div>
+                <div class="modal-footer">
+                    <div class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                        Batal
+                    </div>
+                    <button type="submit" class="btn btn-primary ms-auto">
+                        Simpan tag baru
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -298,116 +236,154 @@
 <div class="modal modal-blur fade" id="modal-edit-tag" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Edit Data Tag</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label class="form-label">Nama</label>
-                    <input type="text" class="form-control" name="name" placeholder="Nama tag baru" value="IPA" required>
+            <form action="{{ url_for('tag.update') }}" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Data Tag</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div>
-                    <label class="form-label">Warna tag</label>
-                    <div class="row g-2">
-                        <div class="col-auto">
-                            <label class="form-colorinput">
-                                <input name="color" type="radio" value="dark" class="form-colorinput-input" required>
-                                <span class="form-colorinput-color bg-dark"></span>
-                            </label>
-                        </div>
-                        <div class="col-auto">
-                            <label class="form-colorinput">
-                                <input name="color" type="radio" value="blue" class="form-colorinput-input" required checked>
-                                <span class="form-colorinput-color bg-blue"></span>
-                            </label>
-                        </div>
-                        <div class="col-auto">
-                            <label class="form-colorinput">
-                                <input name="color" type="radio" value="azure" class="form-colorinput-input" required>
-                                <span class="form-colorinput-color bg-azure"></span>
-                            </label>
-                        </div>
-                        <div class="col-auto">
-                            <label class="form-colorinput">
-                                <input name="color" type="radio" value="indigo" class="form-colorinput-input" required>
-                                <span class="form-colorinput-color bg-indigo"></span>
-                            </label>
-                        </div>
-                        <div class="col-auto">
-                            <label class="form-colorinput">
-                                <input name="color" type="radio" value="purple" class="form-colorinput-input" required>
-                                <span class="form-colorinput-color bg-purple"></span>
-                            </label>
-                        </div>
-                        <div class="col-auto">
-                            <label class="form-colorinput">
-                                <input name="color" type="radio" value="pink" class="form-colorinput-input" required>
-                                <span class="form-colorinput-color bg-pink"></span>
-                            </label>
-                        </div>
-                        <div class="col-auto">
-                            <label class="form-colorinput">
-                                <input name="color" type="radio" value="red" class="form-colorinput-input" required>
-                                <span class="form-colorinput-color bg-red"></span>
-                            </label>
-                        </div>
-                        <div class="col-auto">
-                            <label class="form-colorinput">
-                                <input name="color" type="radio" value="orange" class="form-colorinput-input" required>
-                                <span class="form-colorinput-color bg-orange"></span>
-                            </label>
-                        </div>
-                        <div class="col-auto">
-                            <label class="form-colorinput">
-                                <input name="color" type="radio" value="yellow" class="form-colorinput-input" required>
-                                <span class="form-colorinput-color bg-yellow"></span>
-                            </label>
-                        </div>
-                        <div class="col-auto">
-                            <label class="form-colorinput">
-                                <input name="color" type="radio" value="lime" class="form-colorinput-input" required>
-                                <span class="form-colorinput-color bg-lime"></span>
-                            </label>
+                <div class="modal-body">
+
+                    <input id="edit-tag-id" type="hidden" name="tag_id">
+                    <div class="mb-3">
+                        <label class="form-label">Nama</label>
+                        <input type="text" id="edit-tag-name" class="form-control" name="name" placeholder="Nama tag baru" value="IPA" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Warna tag</label>
+                        <div class="row g-2">
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" id="edit-tag-color-dark" type="radio" value="dark" class="form-colorinput-input" required>
+                                    <span class="form-colorinput-color bg-dark"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" id="edit-tag-color-blue" type="radio" value="blue" class="form-colorinput-input" required>
+                                    <span class="form-colorinput-color bg-blue"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" id="edit-tag-color-azure" type="radio" value="azure" class="form-colorinput-input" required>
+                                    <span class="form-colorinput-color bg-azure"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" id="edit-tag-color-indigo" type="radio" value="indigo" class="form-colorinput-input" required>
+                                    <span class="form-colorinput-color bg-indigo"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" id="edit-tag-color-purple" type="radio" value="purple" class="form-colorinput-input" required>
+                                    <span class="form-colorinput-color bg-purple"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" id="edit-tag-color-pink" type="radio" value="pink" class="form-colorinput-input" required>
+                                    <span class="form-colorinput-color bg-pink"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" id="edit-tag-color-red" type="radio" value="red" class="form-colorinput-input" required>
+                                    <span class="form-colorinput-color bg-red"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" id="edit-tag-color-orange" type="radio" value="orange" class="form-colorinput-input" required>
+                                    <span class="form-colorinput-color bg-orange"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" id="edit-tag-color-yellow" type="radio" value="yellow" class="form-colorinput-input" required>
+                                    <span class="form-colorinput-color bg-yellow"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" id="edit-tag-color-lime" type="radio" value="lime" class="form-colorinput-input" required>
+                                    <span class="form-colorinput-color bg-lime"></span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
-                    Batal
-                </a>
-                <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
-                    Simpan perubahan
-                </a>
-            </div>
+                <div class="modal-footer">
+                    <div class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                        Batal
+                    </div>
+                    <button type="submit" class="btn btn-primary ms-auto">
+                        Simpan perubahan
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 <div class="modal modal-blur fade" id="modal-delete-tag" tabindex="-1" style="display: none;" aria-hidden="true">
-      <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
         <div class="modal-content">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          <div class="modal-status bg-danger"></div>
-          <div class="modal-body text-center py-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
-            <h3>Hapus tag?</h3>
-            <div class="text-muted">Apakah Anda yakin menghapus tag <b>IPA</b>? <br>Tag yang dihapus tidak dapat dikembalikan.</div>
-          </div>
-          <div class="modal-footer">
-            <div class="w-100">
-              <div class="row">
-                <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
-                    Batal
-                  </a></div>
-                <div class="col"><a href="#" class="btn btn-danger w-100" data-bs-dismiss="modal">
-                    Hapus
-                  </a></div>
-              </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+            <div class="modal-body text-center py-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path>
+                    <path d="M12 9v4"></path>
+                    <path d="M12 17h.01"></path>
+                </svg>
+                <h3>Hapus tag?</h3>
+                <div class="text-muted">Apakah Anda yakin menghapus tag <b id="delete-tag-name">IPA</b>? <br>Tag yang dihapus tidak dapat dikembalikan.</div>
             </div>
-          </div>
+            <form action="{{ url_for('tag.delete') }}" method="post">
+                <div class="modal-footer">
+                    <div class="w-100">
+                        <div class="row">
+
+                            <input id="delete-tag-id" type="hidden" name="tag_id">
+                            <div class="col">
+                                <a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                    Batal
+                                </a>
+                            </div>
+                            <div class="col">
+                                <button type="submit" class="btn btn-danger w-100">
+                                    Hapus
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
-      </div>
     </div>
+</div>
 {% endblock modal %}
+
+{% block script %}
+<script>
+    function delete_tag(id, name) {
+        $('#delete-tag-id').val(id);
+        $('#delete-tag-name').text(name);
+        $('#modal-delete-tag').modal('show');
+    }
+
+    function update_tag(id, name, color) {
+        $('#edit-tag-id').val(id);
+        $('#edit-tag-name').val(name);
+        $(`input[name="color"][value="${color}"]`).prop('checked', true);
+        $('#modal-edit-tag').modal('show');
+    }
+
+    $(document).ready(function () {
+        $('#table').DataTable();
+    });
+</script>
+{% endblock script %}
