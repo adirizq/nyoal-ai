@@ -103,19 +103,8 @@
                 </div>
               </div>
             </div>
-            {% if predictions %}
-            {% for pred in predictions %}
-            <div class="card mb-3">
-              <div class="card-body">
-                <span class="badge bg-primary text-white">Pertanyaan</span>
-                <p>{{ pred['question'] }}</p>
-                <span class="badge bg-success text-white">Jawaban</span>
-                <p>{{ pred['answer'] }}</p>
-              </div>
-            </div>
-            {% endfor %}
-            {% else %}
-            <div class="alert alert-info mb-4">
+            <div id="predictions-container"></div>
+            <div id="guide-info" class="alert alert-info mb-4">
               <div class="d-flex">
                 <div class="me-3">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-info-square-rounded">
@@ -130,7 +119,6 @@
                 </div>
               </div>
             </div>
-            {% endif %}
           </div>
         </div>
       </div>
@@ -147,9 +135,44 @@
       <div class="modal-body">
         <div class="modal-title text-center">Loading</div>
         <div class="w-100 text-center">
-          <div class="spinner-border text-muted" role="status"></div>
+          <div class="mb-3 spinner-border text-muted" role="status"></div>
         </div>
         <div class="text-center">Harap tunggu sejenak. NyoalAI sedang membuat soal untukmu.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal modal-blur fade" id="failed-modal" tabindex="-1" style="display: none;" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-status bg-warning"></div>
+      <div class="modal-body text-center py-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-warning icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+          <path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path>
+          <path d="M12 9v4"></path>
+          <path d="M12 17h.01"></path>
+        </svg>
+        <h3>Prediksi Gagal</h3>
+        <div class="text-muted">Mohon maaf NyoalAI tidak dapat memprediksi soal dikarenakan terdapat error pada server. Apakah Anda mau coba prediksi kembali?</div>
+      </div>
+      <div class="modal-footer">
+        <div class="w-100">
+          <div class="row">
+            <div class="col">
+              <button class="btn w-100" data-bs-dismiss="modal">
+                Tidak
+              </button>
+            </div>
+            <div class="col">
+              <div id="re-predict" class="btn btn-primary w-100">
+                Ya
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -159,8 +182,6 @@
 {% block script %}
 <script>
   $(document).ready(function () {
-    $("#loading-modal").modal('show');
-
     $('#reset-button').click(function () {
       $('#prediction-form')[0].reset();
     });
@@ -186,7 +207,49 @@
     $('#prediction-form').submit(function (e) {
       e.preventDefault();
       $("#loading-modal").modal('show');
-      this.submit();
+
+      $.ajax({
+        type: 'POST',
+        url: '{{ url_for("inference.predict") }}',
+        contentType: 'application/json',
+        data: JSON.stringify({
+          context: $('#context').val()
+        }),
+        xhrFields: {
+          withCredentials: true
+        },
+        success: function (response) {
+          $("#predictions-container").empty();
+
+          predictions = response['message']['predictions'];
+
+          for (var i = 0; i < predictions.length; i++) {
+            var pred = predictions[i];
+            var card = `
+            <div class="card mb-3">
+              <div class="card-body">
+                <span class="badge bg-primary text-white">Pertanyaan</span>
+                <p>${pred['question']}</p>
+                <span class="badge bg-success text-white">Jawaban</span>
+                <p>${pred['answer']}</p>
+              </div>
+            </div>
+            `;
+            $("#predictions-container").append(card);
+          }
+          $("#guide-info").remove();
+          $("#loading-modal").modal('hide');
+        },
+        error: function (response) {
+          $("#loading-modal").modal('hide');
+          $("#failed-modal").modal('show');
+        }
+      });
+    });
+
+    $('#re-predict').click(function () {
+      $("#failed-modal").modal('hide');
+      $('#prediction-form').submit();
     });
   });
 </script>
