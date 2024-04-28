@@ -46,8 +46,8 @@
               </div>
             </div>
             <form method="POST" id="prediction-form">
-              <label class="form-label">Materi <span class="form-label-description" id="char-indicator">0/1024</span></label>
-              <textarea class="form-control mb-3" id="context" name="context" rows="12" placeholder="Content..">{% if context %}{{ context }}{% endif %}</textarea>
+              <label class="form-label">Materi<span class="text-danger">*</span> <span class="form-label-description" id="char-indicator">0/1024</span></label>
+              <textarea class="form-control mb-3" id="context" name="context" rows="12" placeholder="Content.." required>{% if context %}{{ context }}{% endif %}</textarea>
               <div class="row justify-content-end">
                 <div class="col-auto">
                   <div id="reset-button" class="btn btn-warning w-100">
@@ -133,10 +133,10 @@
   <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-body">
-        <div class="modal-title text-center">Loading</div>
         <div class="w-100 text-center">
           <div class="mb-3 spinner-border text-muted" role="status"></div>
         </div>
+        <div class="modal-title text-center">Loading</div>
         <div class="text-center">Harap tunggu sejenak. NyoalAI sedang membuat soal untukmu.</div>
       </div>
     </div>
