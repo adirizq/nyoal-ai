@@ -43,7 +43,7 @@
                                         <form id="update-general-info-form" action="{{ url_for('qa_pack.update_general_info') }}" method="POST">
                                             <input name="qa_pack_id" type="hidden" value="{{ qa_pack.id }}">
                                             <div class="mb-3">
-                                                <label class="form-label">Nama</label>
+                                                <label class="form-label">Nama<span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" name="name" placeholder="Nama paket soal" value="{{ qa_pack.name }}" required>
                                             </div>
                                             <div class="mb-3">
@@ -85,8 +85,8 @@
                                             </div>
                                         </div>
                                         <form method="POST" id="prediction-form">
-                                            <label class="form-label">Materi <span class="form-label-description" id="char-indicator">0/1024</span></label>
-                                            <textarea class="form-control mb-3" id="context" name="context" rows="12" placeholder="Content.."></textarea>
+                                            <label class="form-label">Materi<span class="text-danger">*</span> <span class="form-label-description" id="char-indicator">0/1024</span></label>
+                                            <textarea class="form-control mb-3" id="context" name="context" rows="12" placeholder="Content.." required></textarea>
                                             <div class="row justify-content-end">
                                                 <div class="col-auto">
                                                     <div id="reset-button" class="btn btn-warning btn-icon w-100">
