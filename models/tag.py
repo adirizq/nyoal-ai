@@ -1,7 +1,7 @@
 from models.user import User
 
 from firebase_config import firebase_db
-
+from firebase_admin import firestore
 
 class Tag():
     def __init__(self, name, color, id=None, owner_id=None):
@@ -35,6 +35,12 @@ class Tag():
 
     def delete(self):
         firebase_db.collection('tags').document(self.id).delete()
+
+        qa_packs = firebase_db.collection('qa_packs').where('tags_id', 'array_contains', self.id).stream()
+        for qa_pack in qa_packs:
+            qa_pack.reference.update({
+                'tags_id': firestore.ArrayRemove([self.id])
+            })
 
         return self
     

@@ -3,7 +3,13 @@
 {% block title %}NyoalAI - Dashboard - Paket Soal{% endblock title %}
 
 {% block style %}
-<link href="{{ url_for('static', filename='dashboard/css/tabler-vendors.min.css') }}" rel="stylesheet"/>
+<link href="{{ url_for('static', filename='dashboard/css/tabler-vendors.min.css') }}" rel="stylesheet" />
+
+<style>
+    td.wrap {
+        white-space: normal;
+    }
+</style>
 {% endblock style %}
 
 {% block content %}
@@ -52,25 +58,8 @@
                     <div class="card-header">
                         <h3 class="card-title">Data Paket Soal</h3>
                     </div>
-                    <div class="card-body border-bottom py-3">
-                        <div class="d-flex">
-                            <div class="text-muted">
-                                Show
-                                <div class="mx-2 d-inline-block">
-                                    <input type="text" class="form-control form-control-sm" value="8" size="3" aria-label="Invoices count">
-                                </div>
-                                entries
-                            </div>
-                            <div class="ms-auto text-muted">
-                                Search:
-                                <div class="ms-2 d-inline-block">
-                                    <input type="text" class="form-control form-control-sm" aria-label="Search invoice">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="table-responsive">
-                        <table class="table card-table table-vcenter text-nowrap datatable">
+                        <table id="table" class="table card-table table-vcenter text-nowrap datatable">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -82,7 +71,68 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for qa_pack in qa_packs %}
                                 <tr>
+                                    <td><span class="text-muted">{{ loop.index }}</span></td>
+                                    <td>{{ qa_pack.name }}</td>
+                                    <td class="wrap">
+                                        {% for tag in qa_pack.tags %}
+                                        <span class="status status-{{ tag.color }} h5 m-0 my-1">{{ tag.name }}</span>
+                                        {% endfor %}
+                                    </td>
+                                    <td>{{ qa_pack.total_qas }}</td>
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-outline-red mb-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-download">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                <path d="M7 11l5 5l5 -5" />
+                                                <path d="M12 4l0 12" />
+                                            </svg>
+                                            PDF
+                                        </a>
+                                        <a href="#" class="btn btn-sm btn-outline-blue mb-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-download">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                <path d="M7 11l5 5l5 -5" />
+                                                <path d="M12 4l0 12" />
+                                            </svg>
+                                            Word
+                                        </a>
+                                        <br>
+                                        <a href="#" class="btn btn-sm btn-outline-orange"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-download">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                <path d="M7 11l5 5l5 -5" />
+                                                <path d="M12 4l0 12" />
+                                            </svg>
+                                            Moodle
+                                        </a>
+                                    </td>
+                                    <td class="text-end">
+                                        <a class="btn btn-warning btn-icon" href="{{ url_for('qa_pack.detail', id=qa_pack.id) }}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                <path d="M16 5l3 3" />
+                                            </svg>
+                                        </a>
+                                        <button class="btn btn-danger btn-icon" onclick="delete_qa_pack('{{ qa_pack.id }}', '{{ qa_pack.name }}')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M4 7l16 0" />
+                                                <path d="M10 11l0 6" />
+                                                <path d="M14 11l0 6" />
+                                                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {# <tr>
                                     <td><span class="text-muted">1</span></td>
                                     <td>Ulangan Harian IPA - Taksonomi</td>
                                     <td><span class="status status-primary h5 m-0">IPA</span></td>
@@ -112,100 +162,9 @@
                                             </svg>
                                         </a>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td><span class="text-muted">2</span></td>
-                                    <td>Latihan IPA - Negara</td>
-                                    <td><span class="status status-success h5 m-0">IPS</span></td>
-                                    <td>10</td>
-                                    <td>
-                                        <a href="#" class="btn btn-outline-red">PDF</a>
-                                        <a href="#" class="btn btn-outline-blue">Word</a>
-                                        <a href="#" class="btn btn-outline-orange">Moodle</a>
-                                    </td>
-                                    <td class="text-end">
-                                        <a class="btn btn-warning btn-icon" href="{{ url_for('qa_pack.detail', id=2) }}">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                                <path d="M16 5l3 3" />
-                                            </svg>
-                                        </a>
-                                        <a class="btn btn-danger btn-icon" href="#" data-bs-toggle="modal" data-bs-target="#modal-delete-qa-pack">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M4 7l16 0" />
-                                                <path d="M10 11l0 6" />
-                                                <path d="M14 11l0 6" />
-                                                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                            </svg>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><span class="text-muted">3</span></td>
-                                    <td>Latihan Matematika - Penjumlahan</td>
-                                    <td><span class="status status-danger h5 m-0">Matematika</span></td>
-                                    <td>10</td>
-                                    <td>
-                                        <a href="#" class="btn btn-outline-red">PDF</a>
-                                        <a href="#" class="btn btn-outline-blue">Word</a>
-                                        <a href="#" class="btn btn-outline-orange">Moodle</a>
-                                    </td>
-                                    <td class="text-end">
-                                        <a class="btn btn-warning btn-icon" href="{{ url_for('qa_pack.detail', id=3) }}">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                                <path d="M16 5l3 3" />
-                                            </svg>
-                                        </a>
-                                        <a class="btn btn-danger btn-icon" href="#" data-bs-toggle="modal" data-bs-target="#modal-delete-qa-pack">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M4 7l16 0" />
-                                                <path d="M10 11l0 6" />
-                                                <path d="M14 11l0 6" />
-                                                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                            </svg>
-                                        </a>
-                                    </td>
-                                </tr>
+                                </tr> #}
                             </tbody>
                         </table>
-                    </div>
-                    <div class="card-footer d-flex align-items-center">
-                        <p class="m-0 text-muted">Showing <span>1</span> to <span>8</span> of <span>16</span> entries</p>
-                        <ul class="pagination m-0 ms-auto">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                                    <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M15 6l-6 6l6 6"></path>
-                                    </svg>
-                                    prev
-                                </a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">4</a></li>
-                            <li class="page-item"><a class="page-link" href="#">5</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">
-                                    next <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M9 6l6 6l-6 6"></path>
-                                    </svg>
-                                </a>
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -217,34 +176,37 @@
 {% block modal %}
 <div class="modal modal-blur fade" id="modal-new-qa-pack" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Paket Soal Baru</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label class="form-label">Nama</label>
-                    <input type="text" class="form-control" name="name" placeholder="Nama paket soal baru" required>
+        <form action="{{ url_for('qa_pack.create') }}" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Paket Soal Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div>
-                    <label class="form-label">Tag</label>
-                    <select type="text" class="form-select" placeholder="Select tags" id="select-tags" value="" multiple>
-                        <option value="IPA"><span class="status status-primary">IPA</span></option>
-                        <option value="IPS">IPS</option>
-                        <option value="Matematika">Matematika</option>
-                    </select>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nama</label>
+                        <input type="text" class="form-control" name="name" placeholder="Nama paket soal baru" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Tag</label>
+                        <select name="tags_id" class="form-select" placeholder="Select tags" id="select-tags" value="" multiple>
+                            <option value="" hidden disabled>Pilih tag (opsional) ...</option>
+                            {% for tag in tags %}
+                            <option value="{{ tag['id'] }}">{{ tag['name'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                        Batal
+                    </div>
+                    <button type="submit" class="btn btn-primary ms-auto">
+                        Simpan paket soal baru
+                    </button>
                 </div>
             </div>
-            <div class="modal-footer">
-                <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
-                    Batal
-                </a>
-                <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
-                    Simpan paket soal baru
-                </a>
-            </div>
-        </div>
+        </form>
     </div>
 </div>
 
@@ -261,20 +223,27 @@
                     <path d="M12 17h.01"></path>
                 </svg>
                 <h3>Hapus paket soal?</h3>
-                <div class="text-muted">Apakah Anda yakin menghapus paket soal <b>Ulangan Harian IPA - Taksonomi</b>? <br>Paket soal yang dihapus tidak dapat dikembalikan.</div>
+                <div class="text-muted">Apakah Anda yakin menghapus paket soal <b id="delete-qa-pack-name"></b>? <br>Paket soal yang dihapus tidak dapat dikembalikan.</div>
             </div>
-            <div class="modal-footer">
-                <div class="w-100">
-                    <div class="row">
-                        <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
-                                Batal
-                            </a></div>
-                        <div class="col"><a href="#" class="btn btn-danger w-100" data-bs-dismiss="modal">
-                                Hapus
-                            </a></div>
+            <form action="{{ url_for('qa_pack.delete') }}" method="post">
+                <div class="modal-footer">
+                    <div class="w-100">
+                        <div class="row">
+                            <input id="delete-qa-pack-id" type="hidden" name="qa_pack_id">
+                            <div class="col">
+                                <a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                    Batal
+                                </a>
+                            </div>
+                            <div class="col">
+                                <button type="submit" class="btn btn-danger w-100">
+                                    Hapus
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
@@ -284,7 +253,15 @@
 <script src="{{ url_for('static', filename='dashboard/libs/tom-select/dist/js/tom-select.base.min.js') }}" defer></script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    function delete_qa_pack(id, name) {
+        $('#delete-qa-pack-id').val(id);
+        $('#delete-qa-pack-name').text(name);
+        $('#modal-delete-qa-pack').modal('show');
+    }
+
+    $(document).ready(function () {
+        $('#table').DataTable();
+
         var el;
         window.TomSelect && (new TomSelect(el = document.getElementById('select-tags'), {
             copyClassesToDropdown: false,

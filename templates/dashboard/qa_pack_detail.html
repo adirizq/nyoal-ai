@@ -16,8 +16,8 @@
                 <div class="page-pretitle">
                     Paket Soal Detail
                 </div>
-                <h2 class="page-title">
-                    Ulangan Harian IPA - Taksonomi &nbsp;&nbsp;<span class="status status-primary">IPA</span>
+                <h2 class="page-title" id="title_name_tags">
+                    {{ qa_pack.name }} &nbsp;&nbsp;{% for tag in qa_pack_tags %}<span class="status status-{{ tag.color }} me-2">{{ tag.name }}</span>{% endfor %}
                 </h2>
             </div>
         </div>
@@ -40,21 +40,24 @@
                                 </h2>
                                 <div id="collapse-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-general-information" style="">
                                     <div class="accordion-body pt-0">
-                                        <div class="mb-3">
-                                            <label class="form-label">Nama</label>
-                                            <input type="text" class="form-control" name="name" placeholder="Nama paket soal" value="Ulangan Harian IPA - Taksonomi" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Tag</label>
-                                            <select type="text" class="form-select" placeholder="Select tags" id="select-tags" value="" multiple>
-                                                <option value="IPA" selected>IPA</option>
-                                                <option value="IPS">IPS</option>
-                                                <option value="Matematika">Matematika</option>
-                                            </select>
-                                        </div>
-                                        <div class="w-100 text-end">
-                                            <a href="#" class="btn btn-primary">Simpan</a>
-                                        </div>
+                                        <form id="update-general-info-form" action="{{ url_for('qa_pack.update_general_info') }}" method="POST">
+                                            <input name="qa_pack_id" type="hidden" value="{{ qa_pack.id }}">
+                                            <div class="mb-3">
+                                                <label class="form-label">Nama</label>
+                                                <input type="text" class="form-control" name="name" placeholder="Nama paket soal" value="{{ qa_pack.name }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Tag</label>
+                                                <select name="tags_id" class="form-select" placeholder="Select tags" id="select-tags" value="" multiple>
+                                                    {% for tag in tags %}
+                                                    <option value="{{ tag.id }}" {% if tag.id in qa_pack.tags_id %}selected{% endif %}>{{ tag.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="w-100 text-end">
+                                                <button id="general-info-save-button" style="submit" class="btn btn-primary">Simpan</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -81,38 +84,40 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <label class="form-label">Materi <span class="form-label-description">548/1024</span></label>
-                                        <textarea class="form-control mb-3" name="example-textarea-input" rows="12" placeholder="Content..">Tetikus atau mouse adalah peranti penunjuk yang digunakan untuk memasukkan data dan perintah ke dalam komputer selain dengan papan ketik. Mouse memperoleh nama demikian karena kabel yang menjulur berbentuk seperti ekor tikus. &#13;&#10;&#13;&#10;Mouse pertama kali dibuat pada tahun 1963 oleh Douglas Engelbart yang berbahan dasar kayu dengan satu tombol. Model kedua sudah dilengkapi dengan tiga tombol. Pada tahun 1970, Douglas Engelbart memperkenalkan Mouse yang dapat mengetahui posisi X-Y pada layar komputer, Mouse ini dikenal dengan nama Indikator Posisi X-Y.</textarea>
-                                        <div class="row justify-content-end">
-                                            <div class="col-auto">
-                                                <a href="#" class="btn btn-warning btn-icon w-100">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-reload">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                        <path d="M19.933 13.041a8 8 0 1 1 -9.925 -8.788c3.899 -1 7.935 1.007 9.425 4.747" />
-                                                        <path d="M20 4v5h-5" />
-                                                    </svg>
-                                                </a>
+                                        <form method="POST" id="prediction-form">
+                                            <label class="form-label">Materi <span class="form-label-description" id="char-indicator">0/1024</span></label>
+                                            <textarea class="form-control mb-3" id="context" name="context" rows="12" placeholder="Content.."></textarea>
+                                            <div class="row justify-content-end">
+                                                <div class="col-auto">
+                                                    <div id="reset-button" class="btn btn-warning btn-icon w-100">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-reload">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M19.933 13.041a8 8 0 1 1 -9.925 -8.788c3.899 -1 7.935 1.007 9.425 4.747" />
+                                                            <path d="M20 4v5h-5" />
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div id="paste-button" class="btn btn-success btn-icon w-100">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+                                                            <path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <button submit class="btn btn-primary w-100">
+                                                        Buat Soal <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right me-0 ms-2">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M5 12l14 0" />
+                                                            <path d="M13 18l6 -6" />
+                                                            <path d="M13 6l6 6" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <div class="col-auto">
-                                                <a href="#" class="btn btn-success btn-icon w-100">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                        <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
-                                                        <path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
-                                                    </svg>
-                                                </a>
-                                            </div>
-                                            <div class="col-auto">
-                                                <a href="#" class="btn btn-primary w-100">
-                                                    Buat Soal <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right me-0 ms-2">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                        <path d="M5 12l14 0" />
-                                                        <path d="M13 18l6 -6" />
-                                                        <path d="M13 6l6 6" />
-                                                    </svg>
-                                                </a>
-                                            </div>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -122,112 +127,80 @@
             </div>
             <div class="col-lg-7">
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Daftar Soal</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="alert alert-warning mb-4">
-                            <div class="d-flex">
-                                <div class="me-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-alert-triangle">
+                    <form id="qa-form" action="{{ url_for('qa_pack.update_qa') }}" method="post">
+                        <div class="card-header">
+                            <h3 class="card-title">Daftar Soal</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-warning mb-4">
+                                <div class="d-flex">
+                                    <div class="me-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-alert-triangle">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 9v4" />
+                                            <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" />
+                                            <path d="M12 16h.01" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div>Selalu cek kembali hasil prediksi soal & jawaban sebelum digunakan.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="guide-info" class="alert alert-info mb-4">
+                                <div class="d-flex">
+                                    <div class="me-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-info-square-rounded">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 9h.01" />
+                                            <path d="M11 12h1v4h1" />
+                                            <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div>Jangan lupa untuk klik tombol simpan.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="qa-container">
+                                {% for qa in qa_pack.qas %}
+                                <div id="qa-{{ loop.index }}" class="card mb-3 qa-card">
+                                    <input type="hidden" name="id">
+                                    <div class="card-header p-2">
+                                        <div class="d-flex justify-content-between w-100">
+                                            <div class="card-title fs-4 lh-1 qa-number">Soal #{{ loop.index }}</div>
+                                            <div class="text-danger lh-1 qa-delete-button" onclick="delete_qa({{ loop.index }})">Hapus</div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-2">
+                                        <div class="mb-3">
+                                            <label class="form-label">Pertanyaan</label>
+                                            <textarea class="form-control mb-3" name="question" rows="3" placeholder="Pertanyaan">{{ qa.question }}</textarea>
+                                        </div>
+                                        <div>
+                                            <label class="form-label">Jawaban</label>
+                                            <textarea class="form-control" name="answer" rows="2" placeholder="Jawaban">{{ qa.answer }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="w-100">
+                                <div onclick="add_empty_qa()" class="btn btn-success w-100">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-circle-plus">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M12 9v4" />
-                                        <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" />
-                                        <path d="M12 16h.01" />
+                                        <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                                        <path d="M9 12h6" />
+                                        <path d="M12 9v6" />
                                     </svg>
-                                </div>
-                                <div>
-                                    <div>Selalu cek kembali hasil prediksi soal & jawaban sebelum digunakan.</div>
+                                    Tambah Soal
                                 </div>
                             </div>
                         </div>
-                        <div class="card mb-3">
-                            <div class="card-header p-2">
-                                <div class="d-flex justify-content-between w-100">
-                                    <div class="card-title fs-4 lh-1">Soal #1</div>
-                                    <a href="" class="text-danger lh-1" data-bs-toggle="modal" data-bs-target="#modal-delete-qa">Hapus</a>
-                                </div>
-                            </div>
-                            <div class="card-body p-2">
-                                <div class="mb-3">
-                                    <label class="form-label">Pertanyaan</label>
-                                    <textarea class="form-control mb-3" name="example-textarea-input" rows="3" placeholder="Pertanyaan">Apa peranti penunjuk yang digunakan untuk memasukkan data dan perintah ke dalam komputer selain dengan papan ketik?</textarea>
-                                </div>
-                                <div>
-                                    <label class="form-label">Jawaban</label>
-                                    <textarea class="form-control" name="example-textarea-input" rows="2" placeholder="Jawaban">Tetikus atau mouse</textarea>
-                                </div>
-                            </div>
+                        <div class="card-footer text-end">
+                            <button type="submit" class="btn btn-primary">Simpan</button>
                         </div>
-                        <div class="card mb-3">
-                            <div class="card-header p-2">
-                                <div class="d-flex justify-content-between w-100">
-                                    <div class="card-title fs-4 lh-1">Soal #2</div>
-                                    <a href="" class="text-danger lh-1" data-bs-toggle="modal" data-bs-target="#modal-delete-qa">Hapus</a>
-                                </div>
-                            </div>
-                            <div class="card-body p-2">
-                                <div class="mb-3">
-                                    <label class="form-label">Pertanyaan</label>
-                                    <textarea class="form-control mb-3" name="example-textarea-input" rows="3" placeholder="Pertanyaan">Apa peranti penunjuk yang digunakan untuk memasukkan data dan perintah ke dalam komputer selain dengan papan ketik?</textarea>
-                                </div>
-                                <div>
-                                    <label class="form-label">Jawaban</label>
-                                    <textarea class="form-control" name="example-textarea-input" rows="2" placeholder="Jawaban">Tetikus atau mouse</textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card mb-3">
-                            <div class="card-header p-2">
-                                <div class="d-flex justify-content-between w-100">
-                                    <div class="card-title fs-4 lh-1">Soal #3</div>
-                                    <a href="" class="text-danger lh-1" data-bs-toggle="modal" data-bs-target="#modal-delete-qa">Hapus</a>
-                                </div>
-                            </div>
-                            <div class="card-body p-2">
-                                <div class="mb-3">
-                                    <label class="form-label">Pertanyaan</label>
-                                    <textarea class="form-control mb-3" name="example-textarea-input" rows="3" placeholder="Pertanyaan">Apa peranti penunjuk yang digunakan untuk memasukkan data dan perintah ke dalam komputer selain dengan papan ketik?</textarea>
-                                </div>
-                                <div>
-                                    <label class="form-label">Jawaban</label>
-                                    <textarea class="form-control" name="example-textarea-input" rows="2" placeholder="Jawaban">Tetikus atau mouse</textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card mb-3">
-                            <div class="card-header p-2">
-                                <div class="d-flex justify-content-between w-100">
-                                    <div class="card-title fs-4 lh-1">Soal #4</div>
-                                    <a href="" class="text-danger lh-1" data-bs-toggle="modal" data-bs-target="#modal-delete-qa">Hapus</a>
-                                </div>
-                            </div>
-                            <div class="card-body p-2">
-                                <div class="mb-3">
-                                    <label class="form-label">Pertanyaan</label>
-                                    <textarea class="form-control mb-3" name="example-textarea-input" rows="3" placeholder="Pertanyaan"></textarea>
-                                </div>
-                                <div>
-                                    <label class="form-label">Jawaban</label>
-                                    <textarea class="form-control" name="example-textarea-input" rows="2" placeholder="Jawaban"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-100">
-                            <a href="#" class="btn btn-success w-100">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-circle-plus">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
-                                    <path d="M9 12h6" />
-                                    <path d="M12 9v6" />
-                                </svg>
-                                Tambah Soal
-                            </a>
-                        </div>
-                    </div>
-                    <div class="card-footer text-end">
-                        <a href="#" class="btn btn-primary">Simpan</a>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -251,19 +224,75 @@
                     <path d="M12 17h.01"></path>
                 </svg>
                 <h3>Hapus soal?</h3>
-                <div class="text-muted">Apakah Anda yakin menghapus <b>Soal #1</b>? <br>Soal yang dihapus tidak dapat dikembalikan.</div>
+                <div class="text-muted">Apakah Anda yakin menghapus <b id="delete-qa-number-info"></b>? <br>Soal yang dihapus tidak dapat dikembalikan.</div>
             </div>
             <div class="modal-footer">
                 <div class="w-100">
                     <div class="row">
-                        <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
+                        <div class="col">
+                            <a href="#" class="btn w-100" data-bs-dismiss="modal">
                                 Batal
-                            </a></div>
-                        <div class="col"><a href="#" class="btn btn-danger w-100" data-bs-dismiss="modal">
+                            </a>
+                        </div>
+                        <div class="col">
+                            <span class="d-none" id="delete-qa-number"></span>
+                            <button onclick="confirm_delete_qa()" class="btn btn-danger w-100">
                                 Hapus
-                            </a></div>
+                            </button>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-blur fade" id="modal-success" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-success"></div>
+            <div class="modal-body text-center py-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-green icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+                    <path d="M9 12l2 2l4 -4"></path>
+                </svg>
+                <h3 id="modal-success-title"></h3>
+                <div id="modal-success-description" class="text-muted"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-blur fade" id="modal-danger" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+            <div class="modal-body text-center py-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path>
+                    <path d="M12 9v4"></path>
+                    <path d="M12 17h.01"></path>
+                </svg>
+                <h3 id="modal-danger-title"></h3>
+                <div id="modal-danger-description" class="text-muted"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-blur fade" id="loading-modal" tabindex="-1" style="display: none;" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="w-100 text-center">
+                    <div class="mb-3 spinner-border text-muted" role="status"></div>
+                </div>
+                <div class="modal-title text-center">Loading</div>
+                <div class="text-center">Harap tunggu sejenak. NyoalAI sedang membuat soal untukmu.</div>
             </div>
         </div>
     </div>
@@ -275,7 +304,185 @@
 <script src="{{ url_for('static', filename='dashboard/libs/tom-select/dist/js/tom-select.base.min.js') }}" defer></script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    function add_empty_qa() {
+        total_questions = $("#qa-container").children().length;
+        var card = `
+            <div id="qa-${total_questions + 1}" class="card mb-3 qa-card">
+                <input type="hidden" name="id">
+                <div class="card-header p-2">
+                    <div class="d-flex justify-content-between w-100">
+                        <div class="card-title fs-4 lh-1 qa-number">Soal #${total_questions + 1}</div>
+                        <div class="text-danger lh-1 qa-delete-button" onclick="delete_qa(${total_questions + 1})">Hapus</div>
+                    </div>
+                </div>
+                <div class="card-body p-2">
+                    <div class="mb-3">
+                        <label class="form-label">Pertanyaan</label>
+                        <textarea class="form-control mb-3" name="question" rows="3" placeholder="Pertanyaan"></textarea>
+                    </div>
+                    <div>
+                        <label class="form-label">Jawaban</label>
+                        <textarea class="form-control" name="answer" rows="2" placeholder="Jawaban"></textarea>
+                    </div>
+                </div>
+            </div>
+            `;
+        $("#qa-container").append(card);
+    }
+
+    function refresh_qa_number() {
+        var qa_numbers = $('.qa-number');
+        qa_numbers.each(function (index) {
+            $(this).text('Soal #' + (index + 1));
+        });
+
+        var qa_cards = $('.qa-card');
+        qa_cards.each(function (index) {
+            $(this).attr('id', 'qa-' + (index + 1));
+        });
+
+        var qa_delete_buttons = $('.qa-delete-button');
+        qa_delete_buttons.each(function (index) {
+            $(this).attr('onclick', 'delete_qa(' + (index + 1) + ')');
+        });
+    }
+
+    function delete_qa(qa_id) {
+        $('#delete-qa-number-info').text('Soal #' + qa_id);
+        $('#delete-qa-number').text(qa_id);
+        $('#modal-delete-qa').modal('show');
+    }
+
+    function confirm_delete_qa() {
+        if ($('#modal-delete-qa').hasClass('show')) {
+            console.log($('#delete-qa-number').text());
+            $('#qa-' + $('#delete-qa-number').text()).remove();
+            refresh_qa_number();
+            $('#modal-delete-qa').modal('hide');
+        }
+    }
+
+    function success_model(title, description) {
+        $('#modal-success-title').text(title);
+        $('#modal-success-description').text(description);
+        $('#modal-success').modal('show');
+    }
+
+    function danger_model(title, description) {
+        $('#modal-danger-title').text(title);
+        $('#modal-danger-description').text(description);
+        $('#modal-danger').modal('show');
+    }
+
+    $(document).ready(function () {
+        $('#reset-button').click(function () {
+            $('#prediction-form')[0].reset();
+        });
+
+        $("#paste-button").click(function () {
+            navigator.clipboard.readText().then(function (text) {
+                $("#context").val(text);
+                $("#context").trigger('input');
+            });
+        });
+
+        var max_length = 1024;
+
+        $("#context").on('input', function () {
+            var length = $(this).val().length;
+            var remaining_length = max_length - length;
+            if (remaining_length < 0) {
+                $(this).val($(this).val().substring(0, max_length));
+            }
+            $('#char-indicator').text($(this).val().length + '/' + max_length);
+        });
+
+        $('#update-general-info-form').submit(function (e) {
+            $('#general-info-save-button').prop('disabled', true);
+            $('#general-info-save-button').text('Menyimpan...');
+
+            e.preventDefault();
+            var form = $(this);
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    qa_pack_id: $('input[name=qa_pack_id]').val(),
+                    name: $('input[name=name]').val(),
+                    tags_id: $('select[name=tags_id]').val()
+                }),
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (data) {
+                    success_model('Berhasil', data.message)
+
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ url_for("qa_pack.get_general_info", id=qa_pack.id) }}',
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                        success: function (data) {
+                            $('#title_name_tags').html(data.name + ' &nbsp;&nbsp;');
+
+                            for (let i = 0; i < data.tags.length; i++) {
+                                $('#title_name_tags').append('<span class="status status-' + data.tags[i].color + ' me-2">' + data.tags[i].name + '</span>');
+                            }
+                        }
+                    });
+                },
+                error: function (data) {
+                    danger_model('Gagal', data.responseJSON.message)
+                },
+                complete: function (data) {
+                    $('#general-info-save-button').prop('disabled', false);
+                    $('#general-info-save-button').text('Simpan');
+                }
+            });
+        });
+
+        $('#qa-form').submit(function (e) {
+            e.preventDefault();
+            var form = $(this);
+            var data = [];
+            var qa_cards = $('.qa-card');
+            qa_cards.each(function (index) {
+                var qa_card = $(this);
+                var id = qa_card.find('input[name=id]').val();
+                var question = qa_card.find('textarea[name=question]').val();
+                var answer = qa_card.find('textarea[name=answer]').val();
+                data.push({
+                    id: id,
+                    question: question,
+                    answer: answer
+                });
+            });
+
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    qa_pack_id: '{{ qa_pack.id }}',
+                    data: data
+                }),
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (data) {
+                    success_model('Berhasil', data.message)
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                },
+                error: function (data) {
+                    danger_model('Gagal', data.responseJSON.message)
+                }
+            });
+        });
+
         var el;
         window.TomSelect && (new TomSelect(el = document.getElementById('select-tags'), {
             copyClassesToDropdown: false,
@@ -296,6 +503,63 @@
                 },
             },
         }));
+
+        $('#prediction-form').submit(function (e) {
+            e.preventDefault();
+            $("#loading-modal").modal('show');
+
+            $.ajax({
+                type: 'POST',
+                url: '{{ url_for("inference.predict") }}',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    context: $('#context').val()
+                }),
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (response) {
+                    predictions = response['message']['predictions'];
+
+                    for (var i = 0; i < predictions.length; i++) {
+                        total_questions = $("#qa-container").children().length;
+                        var pred = predictions[i];
+                        var card = `
+                            <div id="qa-${total_questions + 1}" class="card mb-3 qa-card">
+                                <input type="hidden" name="id">
+                                <div class="card-header p-2">
+                                    <div class="d-flex justify-content-between w-100">
+                                        <div class="card-title fs-4 lh-1 qa-number">Soal #${total_questions + 1}</div>
+                                        <div class="text-danger lh-1 qa-delete-button" onclick="delete_qa(${total_questions + 1})">Hapus</div>
+                                    </div>
+                                </div>
+                                <div class="card-body p-2">
+                                    <div class="mb-3">
+                                        <label class="form-label">Pertanyaan</label>
+                                        <textarea class="form-control mb-3" name="question" rows="3" placeholder="Pertanyaan">${pred['question']}</textarea>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Jawaban</label>
+                                        <textarea class="form-control" name="answer" rows="2" placeholder="Jawaban">${pred['answer']}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            `;
+                        $("#qa-container").append(card);
+                    }
+                    $("#loading-modal").modal('hide');
+                },
+                error: function (response) {
+                    $("#loading-modal").modal('hide');
+                    $("#failed-modal").modal('show');
+                }
+            });
+        });
+
+        $('#re-predict').click(function () {
+            $("#failed-modal").modal('hide');
+            $('#prediction-form').submit();
+        });
     });
 </script>
 {% endblock script %}
