@@ -119,6 +119,36 @@ def export_docx():
         return jsonify(message='Terjadi kesalahan server saat export docx', status="error"), 500
     
 
+@qa_pack.route('/export-pdf', methods=['POST'])
+@login_required
+def export_pdf():
+    qa_pack_id = request.get_json().get('qa_pack_id')
+
+    try:
+        qa_pack = QAPack.get_by_id_no_tags(qa_pack_id)
+        docx_path = qa_pack.export_pdf()
+        return jsonify(message=qa_pack.name, status="success"), 200
+    
+    except Exception as e:
+        print('[ERROR] [EXPORT PDF]: ', e)
+        return jsonify(message='Terjadi kesalahan server saat export PDF', status="error"), 500
+    
+
+@qa_pack.route('/export-gift', methods=['POST'])
+@login_required
+def export_gift():
+    qa_pack_id = request.get_json().get('qa_pack_id')
+
+    try:
+        qa_pack = QAPack.get_by_id_no_tags(qa_pack_id)
+        docx_path = qa_pack.export_gift()
+        return jsonify(message=qa_pack.name, status="success"), 200
+    
+    except Exception as e:
+        print('[ERROR] [EXPORT PDF]: ', e)
+        return jsonify(message='Terjadi kesalahan server saat export Moodle GIFT', status="error"), 500
+    
+
 @qa_pack.route('/download-export/<string:file_type>/<string:name>', methods=['GET'])
 @login_required
 def download_export(file_type, name):
@@ -128,6 +158,9 @@ def download_export(file_type, name):
         
         elif file_type == 'pdf':
             return send_file('./export/export.pdf', as_attachment=True, download_name=name + '.pdf')
+        
+        elif file_type == 'gift':
+            return send_file('./export/export.txt', as_attachment=True, download_name=name + '.txt')
         
         else:
             return jsonify(message='Tipe file tidak ditemukan', status="error"), 404

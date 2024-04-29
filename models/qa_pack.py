@@ -1,3 +1,5 @@
+import pdfkit
+
 from models.user import User
 from models.tag import Tag
 from utils import ParagraphExt
@@ -5,6 +7,7 @@ from utils import ParagraphExt
 from firebase_config import firebase_db
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+from flask import render_template
 
 
 class QA():
@@ -145,6 +148,27 @@ class QAPack():
         doc.save('./export/export.docx')
 
         return './export/export.docx'
+    
+
+    def export_pdf(self):
+        html = render_template('export_template/pdf.html', qa_pack=self)
+        pdf_path = './export/export.pdf'
+        pdfkit.from_string(html, pdf_path)
+
+        return pdf_path
+    
+
+    def export_gift(self):
+        gift = ''
+
+        for qa in self.qas:
+            gift += qa.question + ' {=' + qa.answer + '}\n\n'
+
+        with open('./export/export.txt', 'w') as file:
+            file.write(gift)
+
+        return './export/export.txt'
+
 
     @staticmethod
     def get_all(user: User):

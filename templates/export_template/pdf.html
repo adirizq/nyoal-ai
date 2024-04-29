@@ -1,0 +1,32 @@
+<style>
+    @media print {
+        .page-break {
+            page-break-after: always;
+        }
+
+        body {
+            margin: 0;
+            padding: 5rem;
+        }
+    }
+</style>
+
+<body>
+    <h2 style="text-align: center; width: 100%;">{{ qa_pack.name }}</h2>
+    <br>
+    <ol>
+        {% for qa in qa_pack.qas %}
+        <li style="font-size: large;">{{ qa.question }}</li>
+        {% endfor %}
+    </ol>
+
+    <div class="page-break"></div>
+
+    <h2 style="text-align: center; width: 100%; margin-top: 5rem;">Kunci Jawaban</h2>
+    <br>
+    <ol>
+        {% for qa in qa_pack.qas %}
+        <li style="font-size: large;">{{ qa.answer }}</li>
+        {% endfor %}
+    </ol>
+</body>

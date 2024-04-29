@@ -82,7 +82,7 @@
                                     </td>
                                     <td>{{ qa_pack.total_qas }}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-outline-red mb-1">
+                                        <button id="pdf-export-button-{{ loop.index }}" onclick="export_pdf('{{ qa_pack.id }}', {{ loop.index }})" class="btn btn-sm btn-outline-red mb-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-download">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                 <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
@@ -101,14 +101,15 @@
                                             Word
                                         </button>
                                         <br>
-                                        <a href="#" class="btn btn-sm btn-outline-orange"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-download">
+                                        <button id="gift-export-button-{{ loop.index }}" onclick="export_gift('{{ qa_pack.id }}', {{ loop.index }})" class="btn btn-sm btn-outline-orange">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-download">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                 <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
                                                 <path d="M7 11l5 5l5 -5" />
                                                 <path d="M12 4l0 12" />
                                             </svg>
-                                            Moodle
-                                        </a>
+                                            Moodle GIFT
+                                        </button>
                                     </td>
                                     <td class="text-end">
                                         <a class="btn btn-warning btn-icon" href="{{ url_for('qa_pack.detail', id=qa_pack.id) }}">
@@ -341,6 +342,80 @@
                         <path d="M12 4l0 12" />
                     </svg>
                     Word
+                `);
+            }
+        });
+    }
+
+    function export_pdf(id, index) {
+        $(`#pdf-export-button-${index}`).attr('disabled', true);
+        $(`#pdf-export-button-${index}`).html('Exporting...')
+        $.ajax({
+            url: `{{ url_for('qa_pack.export_pdf') }}`,
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                'qa_pack_id': id
+            }),
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (response) {
+                success_model('Berhasil', 'Paket soal berhasil diexport ke format PDF')
+                setTimeout(function () {
+                    window.location.href = `/dashboard/qa_pack/download-export/pdf/${response.message}`;
+                }, 1000);
+            },
+            error: function (response) {
+                danger_model('Gagal', data.responseJSON.message)
+            },
+            complete: function () {
+                $(`#pdf-export-button-${index}`).attr('disabled', false);
+                $(`#pdf-export-button-${index}`).html(`
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-download">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                        <path d="M7 11l5 5l5 -5" />
+                        <path d="M12 4l0 12" />
+                    </svg>
+                    PDF
+                `);
+            }
+        });
+    }
+
+    function export_gift(id, index) {
+        $(`#gift-export-button-${index}`).attr('disabled', true);
+        $(`#gift-export-button-${index}`).html('Exporting...')
+        $.ajax({
+            url: `{{ url_for('qa_pack.export_gift') }}`,
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                'qa_pack_id': id
+            }),
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (response) {
+                success_model('Berhasil', 'Paket soal berhasil diexport ke format Moodle GIFT')
+                setTimeout(function () {
+                    window.location.href = `/dashboard/qa_pack/download-export/gift/${response.message}`;
+                }, 1000);
+            },
+            error: function (response) {
+                danger_model('Gagal', data.responseJSON.message)
+            },
+            complete: function () {
+                $(`#gift-export-button-${index}`).attr('disabled', false);
+                $(`#gift-export-button-${index}`).html(`
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-download">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                        <path d="M7 11l5 5l5 -5" />
+                        <path d="M12 4l0 12" />
+                    </svg>
+                    Moodle GIFT
                 `);
             }
         });
