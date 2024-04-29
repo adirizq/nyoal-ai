@@ -11,6 +11,7 @@ COPY . ./
 
 # Install production dependencies
 RUN pip install --no-cache-dir -r requirements.txt
+RUN apt-get update && apt-get install -y wkhtmltopdf
 
 # Run the web service on container startup
 CMD exec gunicorn --bind :$PORT app:app

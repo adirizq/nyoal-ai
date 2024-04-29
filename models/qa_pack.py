@@ -1,8 +1,13 @@
+import pdfkit
+
 from models.user import User
 from models.tag import Tag
+from utils import ParagraphExt
 
 from firebase_config import firebase_db
-
+from docx import Document
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from flask import render_template
 
 
 class QA():
@@ -117,6 +122,54 @@ class QAPack():
         return self
     
 
+    def export_docx(self):
+        doc = Document()
+        
+        title = doc.add_heading(self.name, level=1)
+        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+        doc.add_paragraph('')
+
+        for qa in self.qas:
+            doc.add_paragraph(qa.question, style='List Number')
+
+        doc.add_page_break()
+
+        answer_title = doc.add_heading("Kunci Jawaban", level=1)
+        answer_title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+        doc.add_paragraph('')
+
+        for index, qa in enumerate(self.qas):
+            p = doc.add_paragraph(qa.answer, style='List Number')
+            if index == 0:
+                ParagraphExt(p).restart_numbering()
+
+        doc.save('./export/export.docx')
+
+        return './export/export.docx'
+    
+
+    def export_pdf(self):
+        html = render_template('export_template/pdf.html', qa_pack=self)
+        pdf_path = './export/export.pdf'
+        pdfkit.from_string(html, pdf_path)
+
+        return pdf_path
+    
+
+    def export_gift(self):
+        gift = ''
+
+        for qa in self.qas:
+            gift += qa.question + ' {=' + qa.answer + '}\n\n'
+
+        with open('./export/export.txt', 'w') as file:
+            file.write(gift)
+
+        return './export/export.txt'
+
+
     @staticmethod
     def get_all(user: User):
         qa_packs = firebase_db.collection('qa_packs').where('owner_id', '==', user.id).stream()
@@ -158,3 +211,11 @@ class QAPack():
         tags = [Tag.get_by_id(tag_id) for tag_id in qa_pack['tags_id']]
 
         return QAPack(qa_pack['name'], id=qa_pack_id, owner_id=qa_pack['owner_id'], tags_id=qa_pack['tags_id'], total_qas=qa_pack['total_qas'], qas=[QA(qa.to_dict()['question'], qa.to_dict()['answer'], id=qa.id) for qa in qas]), tags
+    
+
+    @staticmethod
+    def get_by_id_no_tags(qa_pack_id: str):
+        qa_pack = firebase_db.collection('qa_packs').document(qa_pack_id).get().to_dict()
+        qas = firebase_db.collection('qa_packs').document(qa_pack_id).collection('qas').stream()
+
+        return QAPack(qa_pack['name'], id=qa_pack_id, owner_id=qa_pack['owner_id'], tags_id=qa_pack['tags_id'], total_qas=qa_pack['total_qas'], qas=[QA(qa.to_dict()['question'], qa.to_dict()['answer'], id=qa.id) for qa in qas])

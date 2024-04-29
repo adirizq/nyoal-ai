@@ -82,7 +82,7 @@
                                     </td>
                                     <td>{{ qa_pack.total_qas }}</td>
                                     <td>
-                                        <a href="#" class="btn btn-sm btn-outline-red mb-1">
+                                        <button id="pdf-export-button-{{ loop.index }}" onclick="export_pdf('{{ qa_pack.id }}', {{ loop.index }})" class="btn btn-sm btn-outline-red mb-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-download">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                 <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
@@ -90,8 +90,8 @@
                                                 <path d="M12 4l0 12" />
                                             </svg>
                                             PDF
-                                        </a>
-                                        <a href="#" class="btn btn-sm btn-outline-blue mb-1">
+                                        </button>
+                                        <button id="docx-export-button-{{ loop.index }}" onclick="export_docx('{{ qa_pack.id }}', {{ loop.index }})" class="btn btn-sm btn-outline-blue mb-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-download">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                 <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
@@ -99,16 +99,17 @@
                                                 <path d="M12 4l0 12" />
                                             </svg>
                                             Word
-                                        </a>
+                                        </button>
                                         <br>
-                                        <a href="#" class="btn btn-sm btn-outline-orange"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-download">
+                                        <button id="gift-export-button-{{ loop.index }}" onclick="export_gift('{{ qa_pack.id }}', {{ loop.index }})" class="btn btn-sm btn-outline-orange">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-download">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                 <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
                                                 <path d="M7 11l5 5l5 -5" />
                                                 <path d="M12 4l0 12" />
                                             </svg>
-                                            Moodle
-                                        </a>
+                                            Moodle GIFT
+                                        </button>
                                     </td>
                                     <td class="text-end">
                                         <a class="btn btn-warning btn-icon" href="{{ url_for('qa_pack.detail', id=qa_pack.id) }}">
@@ -247,6 +248,44 @@
         </div>
     </div>
 </div>
+
+<div class="modal modal-blur fade" id="modal-success" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-success"></div>
+            <div class="modal-body text-center py-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-green icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+                    <path d="M9 12l2 2l4 -4"></path>
+                </svg>
+                <h3 id="modal-success-title"></h3>
+                <div id="modal-success-description" class="text-muted"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal modal-blur fade" id="modal-danger" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+            <div class="modal-body text-center py-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path>
+                    <path d="M12 9v4"></path>
+                    <path d="M12 17h.01"></path>
+                </svg>
+                <h3 id="modal-danger-title"></h3>
+                <div id="modal-danger-description" class="text-muted"></div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock modal %}
 
 {% block script %}
@@ -257,6 +296,129 @@
         $('#delete-qa-pack-id').val(id);
         $('#delete-qa-pack-name').text(name);
         $('#modal-delete-qa-pack').modal('show');
+    }
+
+    function success_model(title, description) {
+        $('#modal-success-title').text(title);
+        $('#modal-success-description').text(description);
+        $('#modal-success').modal('show');
+    }
+
+    function danger_model(title, description) {
+        $('#modal-danger-title').text(title);
+        $('#modal-danger-description').text(description);
+        $('#modal-danger').modal('show');
+    }
+
+    function export_docx(id, index) {
+        $(`#docx-export-button-${index}`).attr('disabled', true);
+        $(`#docx-export-button-${index}`).html('Exporting...')
+        $.ajax({
+            url: `{{ url_for('qa_pack.export_docx') }}`,
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                'qa_pack_id': id
+            }),
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (response) {
+                success_model('Berhasil', 'Paket soal berhasil diexport ke format Word')
+                setTimeout(function () {
+                    window.location.href = `/dashboard/qa_pack/download-export/docx/${response.message}`;
+                }, 1000);
+            },
+            error: function (response) {
+                danger_model('Gagal', data.responseJSON.message)
+            },
+            complete: function () {
+                $(`#docx-export-button-${index}`).attr('disabled', false);
+                $(`#docx-export-button-${index}`).html(`
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-download">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                        <path d="M7 11l5 5l5 -5" />
+                        <path d="M12 4l0 12" />
+                    </svg>
+                    Word
+                `);
+            }
+        });
+    }
+
+    function export_pdf(id, index) {
+        $(`#pdf-export-button-${index}`).attr('disabled', true);
+        $(`#pdf-export-button-${index}`).html('Exporting...')
+        $.ajax({
+            url: `{{ url_for('qa_pack.export_pdf') }}`,
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                'qa_pack_id': id
+            }),
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (response) {
+                success_model('Berhasil', 'Paket soal berhasil diexport ke format PDF')
+                setTimeout(function () {
+                    window.location.href = `/dashboard/qa_pack/download-export/pdf/${response.message}`;
+                }, 1000);
+            },
+            error: function (response) {
+                danger_model('Gagal', data.responseJSON.message)
+            },
+            complete: function () {
+                $(`#pdf-export-button-${index}`).attr('disabled', false);
+                $(`#pdf-export-button-${index}`).html(`
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-download">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                        <path d="M7 11l5 5l5 -5" />
+                        <path d="M12 4l0 12" />
+                    </svg>
+                    PDF
+                `);
+            }
+        });
+    }
+
+    function export_gift(id, index) {
+        $(`#gift-export-button-${index}`).attr('disabled', true);
+        $(`#gift-export-button-${index}`).html('Exporting...')
+        $.ajax({
+            url: `{{ url_for('qa_pack.export_gift') }}`,
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                'qa_pack_id': id
+            }),
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (response) {
+                success_model('Berhasil', 'Paket soal berhasil diexport ke format Moodle GIFT')
+                setTimeout(function () {
+                    window.location.href = `/dashboard/qa_pack/download-export/gift/${response.message}`;
+                }, 1000);
+            },
+            error: function (response) {
+                danger_model('Gagal', data.responseJSON.message)
+            },
+            complete: function () {
+                $(`#gift-export-button-${index}`).attr('disabled', false);
+                $(`#gift-export-button-${index}`).html(`
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-download">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                        <path d="M7 11l5 5l5 -5" />
+                        <path d="M12 4l0 12" />
+                    </svg>
+                    Moodle GIFT
+                `);
+            }
+        });
     }
 
     $(document).ready(function () {
