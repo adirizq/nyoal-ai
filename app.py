@@ -10,6 +10,7 @@ from views import views
 
 load_dotenv(override=True)
 
+os.makedirs('export', exist_ok=True)
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 app.secret_key = os.getenv('SECRET_KEY')

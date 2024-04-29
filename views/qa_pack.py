@@ -1,7 +1,7 @@
 from models.qa_pack import QAPack, QA
 from models.tag import Tag
 
-from flask import Blueprint, render_template, redirect, request, flash, url_for, jsonify
+from flask import Blueprint, render_template, redirect, request, flash, url_for, jsonify, send_file
 from flask_login import login_required, current_user
 
 qa_pack = Blueprint('qa_pack', __name__, template_folder='templates', url_prefix='/dashboard/qa_pack')
@@ -102,3 +102,36 @@ def delete():
         print('[ERROR] [DELETE QA PACK]: ', e)
         flash('Terjadi kesalahan server saat menghapus paket soal', 'error')
         return redirect(url_for('dashboard.qa_pack'))
+    
+
+@qa_pack.route('/export-docx', methods=['POST'])
+@login_required
+def export_docx():
+    qa_pack_id = request.get_json().get('qa_pack_id')
+
+    try:
+        qa_pack = QAPack.get_by_id_no_tags(qa_pack_id)
+        docx_path = qa_pack.export_docx()
+        return jsonify(message=qa_pack.name, status="success"), 200
+    
+    except Exception as e:
+        print('[ERROR] [EXPORT DOCX]: ', e)
+        return jsonify(message='Terjadi kesalahan server saat export docx', status="error"), 500
+    
+
+@qa_pack.route('/download-export/<string:file_type>/<string:name>', methods=['GET'])
+@login_required
+def download_export(file_type, name):
+    try:
+        if file_type == 'docx':
+            return send_file('./export/export.docx', as_attachment=True, download_name=name + '.docx')
+        
+        elif file_type == 'pdf':
+            return send_file('./export/export.pdf', as_attachment=True, download_name=name + '.pdf')
+        
+        else:
+            return jsonify(message='Tipe file tidak ditemukan', status="error"), 404
+    
+    except Exception as e:
+        print('[ERROR] [DOWNLOAD EXPORT]: ', e)
+        return jsonify(message='Terjadi kesalahan server saat download file', status="error"), 500

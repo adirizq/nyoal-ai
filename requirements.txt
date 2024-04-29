@@ -4,4 +4,5 @@ Flask_Login==0.6.3
 Pyrebase4==4.7.1
 python-dotenv==1.0.1
 google-cloud-aiplatform==1.48.0
-gunicorn
+gunicorn==22.0.0
+python-docx==1.1.0
