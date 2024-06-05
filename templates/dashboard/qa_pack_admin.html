@@ -1,0 +1,137 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}NyoalAI - Dashboard - Paket Soal{% endblock title %}
+
+{% block style %}
+<link href="{{ url_for('static', filename='dashboard/css/tabler-vendors.min.css') }}" rel="stylesheet" />
+
+<style>
+    td.wrap {
+        white-space: normal;
+    }
+</style>
+{% endblock style %}
+
+{% block content %}
+<!-- Page header -->
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <!-- Page pre-title -->
+                <div class="page-pretitle">
+                    Paket Soal
+                </div>
+                <h2 class="page-title">
+                    Manajemen Data Paket Soal
+                </h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row row-deck row-cards">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Data Paket Soal</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="table" class="table card-table table-vcenter text-nowrap datatable">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Pemilik</th>
+                                    <th>Nama</th>
+                                    <th>Jumlah Soal</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for qa_pack in qa_packs %}
+                                <tr>
+                                    <td><span class="text-muted">{{ loop.index }}</span></td>
+                                    <td>{{ qa_pack.owner_name }}</td>
+                                    <td>{{ qa_pack.name }}</td>
+                                    <td>{{ qa_pack.total_qas }}</td>
+                                    <td class="text-end">
+                                        <button class="btn btn-danger btn-icon" onclick="delete_qa_pack('{{ qa_pack.id }}', '{{ qa_pack.name }}')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M4 7l16 0" />
+                                                <path d="M10 11l0 6" />
+                                                <path d="M14 11l0 6" />
+                                                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block modal %}
+<div class="modal modal-blur fade" id="modal-delete-qa-pack" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+            <div class="modal-body text-center py-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path>
+                    <path d="M12 9v4"></path>
+                    <path d="M12 17h.01"></path>
+                </svg>
+                <h3>Hapus paket soal?</h3>
+                <div class="text-muted">Apakah Anda yakin menghapus paket soal <b id="delete-qa-pack-name"></b>? <br>Paket soal yang dihapus tidak dapat dikembalikan.</div>
+            </div>
+            <form action="{{ url_for('qa_pack.delete') }}" method="post">
+                <div class="modal-footer">
+                    <div class="w-100">
+                        <div class="row">
+                            <input id="delete-qa-pack-id" type="hidden" name="qa_pack_id">
+                            <div class="col">
+                                <a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                    Batal
+                                </a>
+                            </div>
+                            <div class="col">
+                                <button type="submit" class="btn btn-danger w-100">
+                                    Hapus
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock modal %}
+
+{% block script %}
+
+<script>
+    function delete_qa_pack(id, name) {
+        $('#delete-qa-pack-id').val(id);
+        $('#delete-qa-pack-name').text(name);
+        $('#modal-delete-qa-pack').modal('show');
+    }
+
+    $(document).ready(function () {
+        $('#table').DataTable();
+    });
+</script>
+{% endblock script %}

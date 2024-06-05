@@ -22,7 +22,7 @@ def load_user(user_id):
     
     try:
         user_data = firebase_db.collection('users').document(user_id).get().to_dict()
-        user = User(user_id, user_data['name'], user_data['email'], user_data['is_admin'])
+        user = User(user_id, user_data['name'], user_data['email'], user_data['is_admin'], False if 'is_banned' not in user_data else user_data['is_banned'])
         return user
     
     except Exception as e:
@@ -76,9 +76,22 @@ def sign_in():
 
         user = load_user(user_id)
 
+        if user.is_banned:
+            flash('Akun anda telah di banned', 'error')
+            try:
+                logout_user()
+            except Exception as e:
+                print(e)
+            return render_template('front/auth/sign_in.html')
+        
+
         if user:
             login_user(user)
-            return redirect(url_for('dashboard.index'))
+
+            if user.is_admin:
+                return redirect(url_for('dashboard.user'))
+            else:
+                return redirect(url_for('dashboard.index'))
         
         flash('Email atau password salah', 'error')
         return render_template('front/auth/sign_in.html')

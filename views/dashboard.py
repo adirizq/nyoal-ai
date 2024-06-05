@@ -2,6 +2,7 @@ import os
 import sys
 
 from models.tag import Tag
+from models.user import User
 from models.qa_pack import QAPack
 from model_inference import ModelInference
 
@@ -36,9 +37,33 @@ def qa_pack():
     return render_template('dashboard/qa_pack.html', title=title, tags=tags, qa_packs=qa_packs)
 
 
+@dashboard.route('/qa-pack-admin')
+@login_required
+def qa_pack_admin():
+    qa_packs = QAPack.get_all_for_table_admin()
+    title = 'paket_soal_admin'
+    return render_template('dashboard/qa_pack_admin.html', title=title, qa_packs=qa_packs)
+
+
 @dashboard.route('/tag')
 @login_required
 def tag():
     tags = Tag.get_all_dict(current_user)
     title = 'tag'
     return render_template('dashboard/tag.html', title=title, tags=tags)
+
+
+@dashboard.route('/user')
+@login_required
+def user():
+    
+    if not check_admin():
+        return 'Forbidden', 403
+    
+    users = User.get_all()
+    title = 'user'
+    return render_template('dashboard/user.html', title=title, users=users)
+
+
+def check_admin():
+    return current_user.is_admin 

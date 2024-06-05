@@ -177,8 +177,8 @@
 {% block modal %}
 <div class="modal modal-blur fade" id="modal-new-qa-pack" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <form action="{{ url_for('qa_pack.create') }}" method="post">
-            <div class="modal-content">
+        <div class="modal-content">
+            <form action="{{ url_for('qa_pack.create') }}" method="post">
                 <div class="modal-header">
                     <h5 class="modal-title">Paket Soal Baru</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -206,8 +206,8 @@
                         Simpan paket soal baru
                     </button>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 

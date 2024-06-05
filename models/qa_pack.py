@@ -205,6 +205,32 @@ class QAPack():
     
 
     @staticmethod
+    def get_all_for_table_admin():
+        qa_packs = firebase_db.collection('qa_packs').stream()
+        users = firebase_db.collection('users').stream()
+
+        user_dict = {}
+        for user in users:
+            user_dict[user.id] = user.to_dict()['name']
+
+        table_data = []
+        tags = {}
+
+        for qa_pack in qa_packs:
+            qa_pack_id = qa_pack.id
+            qa_pack_dict = qa_pack.to_dict()
+
+            table_data.append({
+                'id': qa_pack_id,
+                'name': qa_pack_dict['name'],
+                'total_qas': qa_pack_dict['total_qas'],
+                'owner_name': user_dict[qa_pack_dict['owner_id']],
+            })
+
+        return table_data
+    
+
+    @staticmethod
     def get_by_id(qa_pack_id: str):
         qa_pack = firebase_db.collection('qa_packs').document(qa_pack_id).get().to_dict()
         qas = firebase_db.collection('qa_packs').document(qa_pack_id).collection('qas').stream()

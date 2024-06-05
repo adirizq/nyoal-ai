@@ -1,0 +1,201 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}NyoalAI - Dashboard - Pengguna{% endblock title %}
+
+{% block content %}
+<!-- Page header -->
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <!-- Page pre-title -->
+                <div class="page-pretitle">
+                    Pengguna
+                </div>
+                <h2 class="page-title">
+                    Manajemen Data Akun Pengguna
+                </h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row row-deck row-cards">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Data Akun Pengguna</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="table" class="table card-table table-vcenter text-nowrap datatable">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama</th>
+                                    <th>Email</th>
+                                    <th>Peran</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in users %}
+                                <tr>
+                                    <td><span class="text-muted">{{ loop.index }}</span></td>
+                                    <td>{{ user.name }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>
+                                        {% if user.is_admin %}
+                                        <span class="status status-orange h5 m-0">Admin</span>
+                                        {% else %}
+                                        <span class="status status-blue h5 m-0">Standar</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-end">
+                                        <button class="btn btn-warning btn-icon" onclick="update_role(`{{ user.id }}`, `{{ user.name }}`, `{{ user.email }}`, `{{ 'admin' if user.is_admin else 'standar' }}`)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                <path d="M16 5l3 3" />
+                                            </svg>
+                                        </button>
+                                        {% if user.is_banned %}
+                                        <button class="btn btn-success btn-icon" onclick="toggle_ban(`{{ user.id }}`, `{{ user.name }}`, `{{ user.is_banned }}`)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-check" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                                                <path d="M6 21v-2a4 4 0 0 1 4 -4h4" />
+                                                <path d="M15 19l2 2l4 -4" />
+                                            </svg>
+                                        </button>
+                                        {% else %}
+                                        <button class="btn btn-danger btn-icon" onclick="toggle_ban(`{{ user.id }}`, `{{ user.name }}`, `{{ user.is_banned }}`)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-cancel" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                                                <path d="M6 21v-2a4 4 0 0 1 4 -4h3.5" />
+                                                <path d="M19 19m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+                                                <path d="M17 21l4 -4" />
+                                            </svg>
+                                        </button>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block modal %}
+<div class="modal modal-blur fade" id="modal-edit-user" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form action="{{ url_for('user.update') }}" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Data user</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input id="edit-user-id" type="hidden" name="user_id">
+                    <label class="form-label mb-0">Nama</label>
+                    <div id="edit-user-name" class="mb-3"></div>
+                    <label class="form-label mb-0">Email</label>
+                    <div id="edit-user-email" class="mb-3"></div>
+                    <div class="mb-3">
+                        <label class="form-label">Peran<span class="text-danger">*</span></label>
+                        <select class="form-select" name="role" id="edit-role" required>
+                            <option value="admin">Admin</option>
+                            <option value="standar">Standar</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                        Batal
+                    </div>
+                    <button type="submit" class="btn btn-primary ms-auto">
+                        Simpan perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-blur fade" id="modal-toggle-ban" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+            <div class="modal-body text-center py-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path>
+                    <path d="M12 9v4"></path>
+                    <path d="M12 17h.01"></path>
+                </svg>
+                <h3 id="title"></h3>
+                <div class="text-muted">Apakah Anda yakin ingin <b id="toggle-ban-desc"></b>?</div>
+            </div>
+            <form action="{{ url_for('user.toggle_ban') }}" method="post">
+                <div class="modal-footer">
+                    <div class="w-100">
+                        <div class="row">
+                            <input id="toggle-ban-id" type="hidden" name="user_id">
+                            <div class="col">
+                                <a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                    Batal
+                                </a>
+                            </div>
+                            <div class="col">
+                                <button type="submit" id="btn-submit" class="btn btn-danger w-100">
+
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock modal %}
+
+{% block script %}
+<script>
+    function toggle_ban(id, name, is_banned) {
+        if (is_banned == 'True') {
+            $('#title').text('Unban Pengguna?');
+            $('#toggle-ban-desc').text(`Unban pengguna ${name}`);
+            $('#btn-submit').text('Unban');
+        } else {
+            $('#title').text('Ban Pengguna');
+            $('#toggle-ban-desc').text(`Ban pengguna ${name}`);
+            $('#btn-submit').text('Ban');
+        }
+        $('#toggle-ban-id').val(id);
+        $('#modal-toggle-ban').modal('show');
+    }
+
+    function update_role(id, name, email, role) {
+        $('#edit-user-id').val(id);
+        $('#edit-user-name').html(name);
+        $('#edit-user-email').html(email);
+        $('#edit-role').val(role);
+        $('#modal-edit-user').modal('show');
+    }
+
+    $(document).ready(function () {
+        $('#table').DataTable();
+    });
+</script>
+{% endblock script %}

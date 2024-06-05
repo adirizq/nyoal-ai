@@ -96,12 +96,12 @@ def delete():
         qa_pack.delete()
 
         flash('Paket soal berhasil dihapus', 'success')
-        return redirect(url_for('dashboard.qa_pack'))
+        return redirect(request.referrer, code=302)
     
     except Exception as e:
         print('[ERROR] [DELETE QA PACK]: ', e)
         flash('Terjadi kesalahan server saat menghapus paket soal', 'error')
-        return redirect(url_for('dashboard.qa_pack'))
+        return redirect(request.referrer, code=302)
     
 
 @qa_pack.route('/export-docx', methods=['POST'])
