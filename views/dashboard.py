@@ -4,9 +4,8 @@ import sys
 from models.tag import Tag
 from models.user import User
 from models.qa_pack import QAPack
-from model_inference import ModelInference
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 from dotenv import load_dotenv
 
@@ -14,11 +13,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 dashboard = Blueprint('dashboard', __name__, template_folder='templates', url_prefix='/dashboard')
-
-model_inference = ModelInference(
-    project_id=os.getenv('MODEL_PROJECT_ID'),
-    endpoint_id=os.getenv('MODEL_END_POINT_ID'),
-)
 
 
 @dashboard.route('/', methods=['GET', 'POST'])

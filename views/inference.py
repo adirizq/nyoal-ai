@@ -1,5 +1,4 @@
 import os
-import sys
 
 from model_inference import ModelInference
 from dotenv import load_dotenv
@@ -12,8 +11,7 @@ load_dotenv()
 inference = Blueprint('inference', __name__, template_folder='templates', url_prefix='/inference')
 
 qag_model = ModelInference(
-    project_id=os.getenv('MODEL_PROJECT_ID'),
-    endpoint_id=os.getenv('MODEL_END_POINT_ID'),
+    api_base_url=os.getenv('MODEL_API_BASE_URL')
 )
 
 

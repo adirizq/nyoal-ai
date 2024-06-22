@@ -1,10 +1,6 @@
 import re
-
-from typing import Dict, List, Union
-
-from google.cloud import aiplatform
-from google.protobuf import json_format
-from google.protobuf.struct_pb2 import Value
+import json
+import requests
 
 
 class SentenceSplitter:
@@ -44,20 +40,9 @@ class SentenceSplitter:
     
 
 class ModelInference:
-    def __init__(self, 
-                 project_id: str, 
-                 endpoint_id: str,
-                 location: str = "asia-southeast1",
-                 api_endpoint: str = "asia-southeast1-aiplatform.googleapis.com"):
+    def __init__(self, api_base_url: str):
         
-        self.project_id = project_id
-        self.endpoint_id = endpoint_id
-        self.location = location
-        self.api_endpoint = api_endpoint
-
-        self.client_options = {"api_endpoint": self.api_endpoint}
-        self.client = aiplatform.gapic.PredictionServiceClient(client_options=self.client_options)
-
+        self.api_base_url = api_base_url
         self.sentence_splitter = SentenceSplitter()
 
 
@@ -65,25 +50,24 @@ class ModelInference:
         return self.sentence_splitter.split_sentence(sentence)
     
 
-    def predict(self, instances: Union[Dict, List[Dict]]):
-        instances = instances if isinstance(instances, list) else [instances]
-        instances = [
-            json_format.ParseDict(instance_dict, Value()) for instance_dict in instances
-        ]
-        parameters_dict = {}
-        parameters = json_format.ParseDict(parameters_dict, Value())
-        endpoint = self.client.endpoint_path(
-            project=self.project_id, location=self.location, endpoint=self.endpoint_id
-        )
-        response = self.client.predict(
-            endpoint=endpoint, instances=instances, parameters=parameters
-        )
+    def predict(self, text: str):
 
-        prediction = response.predictions[0][0]['generated_text']
+        url = f"{self.api_base_url}/predict"
+
+        headersList = {
+            "Content-Type": "application/json" 
+        }
+
+        payload = json.dumps({
+            "text": text
+        })
+
+        response = requests.post(url, data=payload,  headers=headersList)
+        prediction = response.json()
 
         try:
-            question = prediction.split("pertanyaan:")[1].split(" jawaban:")[0]
-            answer = prediction.split("jawaban:")[1]
+            question = prediction['question']
+            answer = prediction['answer']
 
             if question and answer:
                 return {
@@ -92,8 +76,7 @@ class ModelInference:
                 }
 
             return None
-        
+
         except:
             return None
-    
 
